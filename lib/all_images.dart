@@ -5,15 +5,21 @@ class AllImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
-      child: Center(
-        child: Text(
-          'All Images!',
-          style: TextStyle(fontSize: 30.0,color: Colors.white),
-        ),
+    return  Scaffold(
+      backgroundColor: Colors.black,
+      body:Container(
+        height: 100,
+        child: Center(child: Column(
+          children: [
+
+            Text('Wallpapers!!',style: TextStyle(color: Colors.white,fontSize: 20,wordSpacing: 10,height: 2,),),
+            Text('helooo'),
+          ],
+        )),
+
+
+
       ),
-
-
 
     );
   }

@@ -45,6 +45,21 @@ final pages =[AllImages(),Home(),Favorite()];
 final pageController = PageController(initialPage: 0);
 int currentSelected = 0;
 
+@override
+void initState() {
+  super.initState();
+
+  // Add listener to the PageController to update the selected index
+  pageController.addListener(() {
+    int currentIndex = pageController.page?.round() ?? 0;
+    if (currentIndex != currentSelected) {
+      setState(() {
+        currentSelected = currentIndex;
+      });
+    }
+  });
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,9 +96,9 @@ int currentSelected = 0;
         color: Colors.white70,
 
         items: [
-        const  Icon(Icons.home,size: 30,color: Colors.white, ),
-          const Icon(Icons.category_outlined,size: 30,color: Colors.white,),
-          const Icon(Icons.person,size: 30,color: Colors.white,),
+          Icon(Icons.home,size: 30,color: Colors.white, ),
+           Icon(Icons.category_outlined,size: 30,color: Colors.white,),
+           Icon(Icons.person,size: 30,color: Colors.white,),
 
         ],
       onTap: (int index){
@@ -103,7 +118,12 @@ int currentSelected = 0;
 
       body: PageView.builder(
         controller: pageController,
-
+        onPageChanged: (int index) {
+          // Update the selected index when the page changes
+          setState(() {
+            currentSelected = index;
+          });
+        },
         itemCount: pages.length,
     itemBuilder:(BuildContext context,int index){
         return pages[index];
