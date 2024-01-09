@@ -93,12 +93,12 @@ void initState() {
 
         height: 59,
         backgroundColor: Colors.transparent,
-        color: Colors.white70,
+        color: Colors.white,
 
         items: [
-          Icon(Icons.home,size: 30,color: Colors.white, ),
-           Icon(Icons.category_outlined,size: 30,color: Colors.white,),
-           Icon(Icons.person,size: 30,color: Colors.white,),
+          Icon(Icons.home,size: 30,),
+           Icon(Icons.category_outlined,size: 30,),
+           Icon(Icons.person,size: 30,),
 
         ],
       onTap: (int index){
