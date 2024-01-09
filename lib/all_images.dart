@@ -11,10 +11,10 @@ class _AllImagesState extends State<AllImages> {
   PageController _pageController = PageController();
 
   List<String> images = [
-    "https://picsum.photos/id/240/200/300",
-    "https://picsum.photos/id/241/200/300",
-    "https://picsum.photos/id/242/200/300",
-    "https://picsum.photos/id/244/200/300",
+    "https://picsum.photos/seed/picsum/200/300",
+    "https://picsum.photos/208/300",
+    "https://picsum.photos/202/300",
+    "https://picsum.photos/204/300",
   ];
 
   int _currentPage = 0;
@@ -58,7 +58,7 @@ class _AllImagesState extends State<AllImages> {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
-                          height: 135,
+                          height: 130,
                           width: double.infinity,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
@@ -89,6 +89,7 @@ class _AllImagesState extends State<AllImages> {
       ),
     );
   }
+
   Widget buildIndicator(int index) {
     return Container(
       width: 8.0,
