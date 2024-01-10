@@ -4,6 +4,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:walllhang/all_images.dart';
 import 'package:walllhang/fav.dart';
 import 'package:walllhang/home.dart';
+import 'package:walllhang/imageView.dart';
 
 
 void main() {
@@ -41,7 +42,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-final pages =[AllImages(),Home(),Favorite()];
+final pages =[AllImages(),Home(),imageView()];
 final pageController = PageController(initialPage: 0);
 int currentSelected = 0;
 
