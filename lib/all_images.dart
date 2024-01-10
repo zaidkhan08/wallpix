@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class AllImages extends StatefulWidget {
   AllImages({Key? key}) : super(key: key);
@@ -9,14 +11,33 @@ class AllImages extends StatefulWidget {
 
 class _AllImagesState extends State<AllImages> {
   PageController _pageController = PageController();
-
-  List<String> images = [
+  List<String> pageViewImages = [
     "https://picsum.photos/seed/picsum/200/300",
     "https://picsum.photos/208/300",
     "https://picsum.photos/202/300",
     "https://picsum.photos/204/300",
   ];
+  List<String> gridViewImages = [
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/202",
+    "https://picsum.photos/300/204",
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/208",
+    "https://picsum.photos/300/208",
 
+  ];
   int _currentPage = 0;
 
   @override
@@ -26,6 +47,35 @@ class _AllImagesState extends State<AllImages> {
       setState(() {
         _currentPage = _pageController.page!.round();
       });
+    });
+
+    // Start auto-scrolling
+    startAutoScroll();
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the PageController and cancel the timer
+    _pageController.dispose();
+    _timer.cancel();
+    super.dispose();
+  }
+
+  // Timer for auto-scrolling
+  late Timer _timer;
+
+  void startAutoScroll() {
+    const Duration duration = Duration(seconds: 3);
+
+    _timer = Timer.periodic(duration, (Timer timer) {
+      if (_pageController.hasClients) {
+        // Check if the page controller has clients before animating to the next page
+        _pageController.animateToPage(
+          (_currentPage + 1) % pageViewImages.length,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
     });
   }
 
@@ -46,14 +96,14 @@ class _AllImagesState extends State<AllImages> {
               ),
             ),
             SizedBox(
-              height: 135,
+              height: 130,
               width: double.infinity,
               child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
                   PageView.builder(
                     controller: _pageController,
-                    itemCount: images.length,
+                    itemCount: pageViewImages.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -63,7 +113,7 @@ class _AllImagesState extends State<AllImages> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
                             child: Image.network(
-                              images[index],
+                              pageViewImages[index],
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -76,12 +126,36 @@ class _AllImagesState extends State<AllImages> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
-                        images.length,
+                        pageViewImages.length,
                             (index) => buildIndicator(index),
                       ),
                     ),
                   ),
                 ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                  ),
+                  itemCount: gridViewImages.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        image: DecorationImage(
+                          image: NetworkImage(gridViewImages[index]),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ],
