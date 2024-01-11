@@ -28,6 +28,7 @@ class _AllImagesState extends State<Home> {
     "https://picsum.photos/300/206",
     "https://picsum.photos/300/207",
     "https://picsum.photos/300/208",
+    "https://picsum.photos/300/209",
 
   ];
 
@@ -40,35 +41,42 @@ class _AllImagesState extends State<Home> {
       body: Container(
         child: Column(
           children: [
-            Text(
-              '- - - -  Select Your Favourite Catagory  - - - -',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                wordSpacing: 10,
-                height: 2,
+
+            Container(
+              height: 130,
+              padding: EdgeInsets.only(top: 4 ,left: 8,right: 8),
+              child: Expanded(
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
+                  ),
+                  itemCount: images.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        image: DecorationImage(
+                          image: NetworkImage(images[index]),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
-
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 8.0,
-                  mainAxisSpacing: 8.0,
+            Container(
+              padding: EdgeInsets.only(bottom: 8),
+              child: Text(
+                '- - -  Select Your Favourite Catagory  - - -',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  wordSpacing: 10,
+                  height: 2,
                 ),
-                itemCount: images.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      image: DecorationImage(
-                        image: NetworkImage(images[index]),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  );
-                },
               ),
             ),
 

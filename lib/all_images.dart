@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'home.dart';
 
 class AllImages extends StatefulWidget {
   AllImages({Key? key}) : super(key: key);
@@ -21,22 +22,21 @@ class _AllImagesState extends State<AllImages> {
     "https://picsum.photos/300/208",
     "https://picsum.photos/300/202",
     "https://picsum.photos/300/204",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/208",
-
+    "https://picsum.photos/300/201",
+    "https://picsum.photos/300/203",
+    "https://picsum.photos/300/205",
+    "https://picsum.photos/300/206",
+    "https://picsum.photos/300/207",
+    "https://picsum.photos/300/209",
+    "https://picsum.photos/300/210",
+    "https://picsum.photos/300/211",
+    "https://picsum.photos/300/212",
+    "https://picsum.photos/300/213",
+    "https://picsum.photos/300/214",
+    "https://picsum.photos/300/215",
+    "https://picsum.photos/300/216",
+    "https://picsum.photos/300/217",
+    "https://picsum.photos/300/218",
   ];
   int _currentPage = 0;
 
@@ -106,19 +106,26 @@ class _AllImagesState extends State<AllImages> {
                     itemCount: pageViewImages.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          height: 130,
-                          width: double.infinity,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: Image.network(
-                              pageViewImages[index],
-                              fit: BoxFit.cover,
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            height: 130,
+                            width: double.infinity,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => Home()),
+                                );
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Image.network(
+                                  pageViewImages[index],
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      );
+                          ));
                     },
                   ),
                   Positioned(
@@ -140,17 +147,26 @@ class _AllImagesState extends State<AllImages> {
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
+                    crossAxisSpacing: 15.0,
+                    mainAxisSpacing: 12.0,
+                    childAspectRatio: 0.5,
                   ),
                   itemCount: gridViewImages.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        image: DecorationImage(
-                          image: NetworkImage(gridViewImages[index]),
-                          fit: BoxFit.cover,
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Home()),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          image: DecorationImage(
+                            image: NetworkImage(gridViewImages[index]),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     );
