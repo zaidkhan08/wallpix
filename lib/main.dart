@@ -41,96 +41,96 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-final pages =[AllImages(),Home(),Favorite()];
-final pageController = PageController(initialPage: 0);
-int currentSelected = 0;
+  final pages =[AllImages(),Home(),Favorite()];
+  final pageController = PageController(initialPage: 0);
+  int currentSelected = 0;
 
-@override
-void initState() {
-  super.initState();
+  @override
+  void initState() {
+    super.initState();
 
-  // Add listener to the PageController to update the selected index
-  pageController.addListener(() {
-    int currentIndex = pageController.page?.round() ?? 0;
-    if (currentIndex != currentSelected) {
-      setState(() {
-        currentSelected = currentIndex;
-      });
-    }
-  });
-}
+    // Add listener to the PageController to update the selected index
+    pageController.addListener(() {
+      int currentIndex = pageController.page?.round() ?? 0;
+      if (currentIndex != currentSelected) {
+        setState(() {
+          currentSelected = currentIndex;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-
-
-
         backgroundColor: Colors.black,
-        title: CupertinoSearchTextField(style: TextStyle(color: Colors.white,fontSize:15,height: 1.50,),
-
-            decoration:BoxDecoration(
-              color: Colors.white24,
-              borderRadius: BorderRadius.circular(10),
+        appBar: AppBar(
 
 
 
+          backgroundColor: Colors.black,
+          title: CupertinoSearchTextField(style: TextStyle(color: Colors.white,fontSize:15,height: 1.50,),
 
-            )
+              decoration:BoxDecoration(
+                color: Colors.white24,
+                borderRadius: BorderRadius.circular(10),
 
 
+
+
+              )
+
+
+
+
+          ),
+          actions: <Widget>[
+
+          ],
+
+        ),
+        bottomNavigationBar: CurvedNavigationBar(
+
+          height: 59,
+          backgroundColor: Colors.transparent,
+          color: Colors.white,
+
+          items: [
+            Icon(Icons.home,size: 30,),
+            Icon(Icons.category_outlined,size: 30,),
+            Icon(Icons.person,size: 30,),
+
+          ],
+          onTap: (int index){
+            setState(() {
+              currentSelected = index;
+              pageController.jumpToPage(currentSelected);
+            });
+          },
 
 
         ),
-        actions: <Widget>[
-
-        ],
-
-      ),
-      bottomNavigationBar: CurvedNavigationBar(
-
-        height: 59,
-        backgroundColor: Colors.transparent,
-        color: Colors.white,
-
-        items: [
-          Icon(Icons.home,size: 30,),
-           Icon(Icons.category_outlined,size: 30,),
-           Icon(Icons.person,size: 30,),
-
-        ],
-      onTap: (int index){
-          setState(() {
-            currentSelected = index;
-            pageController.jumpToPage(currentSelected);
-          });
-      },
-
-
-      ),
 
 
 
 
 
 
-      body: PageView.builder(
-        controller: pageController,
-        onPageChanged: (int index) {
-          // Update the selected index when the page changes
-          setState(() {
-            currentSelected = index;
-          });
-        },
-        itemCount: pages.length,
-    itemBuilder:(BuildContext context,int index){
-        return pages[index];
-    },
+        body: PageView.builder(
+            controller: pageController,
+            onPageChanged: (int index) {
+              // Update the selected index when the page changes
+              setState(() {
+                currentSelected = index;
+              });
+            },
+            itemCount: pages.length,
+            itemBuilder:(BuildContext context,int index){
+              return pages[index];
+            },
 
 
-      ),
-    );
+            ),
+        );
   }
 }
