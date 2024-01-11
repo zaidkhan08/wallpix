@@ -13,7 +13,7 @@ class imageView extends StatelessWidget {
       body: Container(
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
-          itemCount: 6,
+          itemCount: 5,
           separatorBuilder: (context, _) => SizedBox(width: 12,),
           itemBuilder: (context, index) => imageCard(),
         ),
