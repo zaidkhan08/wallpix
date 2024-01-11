@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'home.dart';
+import 'imageView.dart';
 
 class AllImages extends StatefulWidget {
   AllImages({Key? key}) : super(key: key);
@@ -114,7 +115,7 @@ class _AllImagesState extends State<AllImages> {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => Home()),
+                                  MaterialPageRoute(builder: (context) => imageView()),
                                 );
                               },
                               child: ClipRRect(

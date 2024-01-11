@@ -4,6 +4,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:walllhang/all_images.dart';
 import 'package:walllhang/fav.dart';
 import 'package:walllhang/home.dart';
+import 'imageView.dart';
 
 
 void main() {
@@ -66,29 +67,56 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.black,
         appBar: AppBar(
 
+          title: Container(
+            height: 100,
+            padding: EdgeInsets.only(top: 30,bottom: 24),
+            child: TextField(
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => imageView()),
+                );
+              },
+              style: TextStyle(color: Colors.white),
+              cursorColor: Colors.transparent, // Set the cursor color to transparent
+              enableInteractiveSelection: false,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white24,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(color: Colors.transparent), // Set border color when focused
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                prefixIcon: IconButton(
+                  icon: Icon(Icons.search,color: Colors.white54,),
+                  onPressed: () {
+                    // Handle search logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => imageView()),
+                    );
+                  },
+
+                ),
+              ),
+
+
+            ),
+          ),
+
 
 
           backgroundColor: Colors.black,
-          title: CupertinoSearchTextField(style: TextStyle(color: Colors.white,fontSize:15,height: 1.50,),
-
-              decoration:BoxDecoration(
-                color: Colors.white24,
-                borderRadius: BorderRadius.circular(10),
-
-
-
-
-              )
 
 
 
 
           ),
-          actions: <Widget>[
 
-          ],
 
-        ),
         bottomNavigationBar: CurvedNavigationBar(
 
           height: 59,
