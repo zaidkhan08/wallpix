@@ -5,6 +5,7 @@ import 'package:walllhang/all_images.dart';
 import 'package:walllhang/fav.dart';
 import 'package:walllhang/home.dart';
 
+import 'categoryView.dart';
 import 'imageView.dart';
 
 
@@ -43,7 +44,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-final pages =[AllImages(),Home(),imageView()];
+final pages =[AllImages(),Home(),categoryView()];
 final pageController = PageController(initialPage: 2);
 int currentSelected = 0;
 
