@@ -1,12 +1,26 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'home.dart';
-import 'imageView.dart';
+import 'package:http/http.dart' as http;
+import 'package:walllhang/home.dart';
+import 'package:walllhang/imageView.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: AllImages(),
+    );
+  }
+}
 
 class AllImages extends StatefulWidget {
-  AllImages({Key? key}) : super(key: key);
-
   @override
   _AllImagesState createState() => _AllImagesState();
 }
@@ -19,26 +33,7 @@ class _AllImagesState extends State<AllImages> {
     "https://picsum.photos/202/300",
     "https://picsum.photos/204/300",
   ];
-  List<String> gridViewImages = [
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/202",
-    "https://picsum.photos/300/204",
-    "https://picsum.photos/300/201",
-    "https://picsum.photos/300/203",
-    "https://picsum.photos/300/205",
-    "https://picsum.photos/300/206",
-    "https://picsum.photos/300/207",
-    "https://picsum.photos/300/209",
-    "https://picsum.photos/300/210",
-    "https://picsum.photos/300/211",
-    "https://picsum.photos/300/212",
-    "https://picsum.photos/300/213",
-    "https://picsum.photos/300/214",
-    "https://picsum.photos/300/215",
-    "https://picsum.photos/300/216",
-    "https://picsum.photos/300/217",
-    "https://picsum.photos/300/218",
-  ];
+  List<String> gridViewImages = [];
   int _currentPage = 0;
 
   @override
@@ -52,11 +47,13 @@ class _AllImagesState extends State<AllImages> {
 
     // Start auto-scrolling
     startAutoScroll();
+
+    // Fetch images from the API for gridViewImages
+    fetchGridViewImages();
   }
 
   @override
   void dispose() {
-    // Dispose of the PageController and cancel the timer
     _pageController.dispose();
     _timer.cancel();
     super.dispose();
@@ -70,7 +67,6 @@ class _AllImagesState extends State<AllImages> {
 
     _timer = Timer.periodic(duration, (Timer timer) {
       if (_pageController.hasClients) {
-        // Check if the page controller has clients before animating to the next page
         _pageController.animateToPage(
           (_currentPage + 1) % pageViewImages.length,
           duration: Duration(milliseconds: 500),
@@ -78,6 +74,26 @@ class _AllImagesState extends State<AllImages> {
         );
       }
     });
+  }
+
+  Future<void> fetchGridViewImages() async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://api.pexels.com/v1/curated?per_page=36&page=1'),
+        headers: {
+          'Authorization': 'a7uMZCqGxAC5qTXHdepkr02KXNfOFJtk60tIW0aeNdzBQrFJILQ4ou6S',
+        },
+      );
+
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      final List<dynamic> photos = data['photos'];
+      setState(() {
+        gridViewImages =
+        List<String>.from(photos.map((item) => item['src']['large'] as String));
+      });
+    } catch (error) {
+      print('Error fetching images: $error');
+    }
   }
 
   @override
@@ -107,26 +123,27 @@ class _AllImagesState extends State<AllImages> {
                     itemCount: pageViewImages.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            height: 130,
-                            width: double.infinity,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => imageView()),
-                                );
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10.0),
-                                child: Image.network(
-                                  pageViewImages[index],
-                                  fit: BoxFit.cover,
-                                ),
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          height: 130,
+                          width: double.infinity,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ImageView()),
+                              );
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(
+                                pageViewImages[index],
+                                fit: BoxFit.cover,
                               ),
                             ),
-                          ));
+                          ),
+                        ),
+                      );
                     },
                   ),
                   Positioned(
@@ -152,20 +169,22 @@ class _AllImagesState extends State<AllImages> {
                     mainAxisSpacing: 12.0,
                     childAspectRatio: 0.5,
                   ),
-                  itemCount: gridViewImages.length,
+                  itemCount: gridViewImages.length ,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Home()),
+                          MaterialPageRoute(builder: (context) => imageView()),
                         );
                       },
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
                           image: DecorationImage(
-                            image: NetworkImage(gridViewImages[index]),
+                            image: NetworkImage(
+                              gridViewImages[index % gridViewImages.length],
+                            ),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -189,6 +208,20 @@ class _AllImagesState extends State<AllImages> {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: _currentPage == index ? Colors.white : Colors.grey,
+      ),
+    );
+  }
+}
+
+class ImageView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Image View'),
+      ),
+      body: Center(
+        child: Text('Details of the selected image'),
       ),
     );
   }
