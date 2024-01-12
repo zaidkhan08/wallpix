@@ -10,7 +10,7 @@ class imageView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Container(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.only(top: 70),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,12 +31,15 @@ class imageView extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text(
-                        "Car01",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500
+                      child: Container(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Text(
+                          "Car01",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500
+                          ),
                         ),
                       ),
                     ),

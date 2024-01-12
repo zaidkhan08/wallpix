@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:http/http.dart' as http;
+import 'package:walllhang/imageView.dart';
 
 void main() {
   runApp(MyApp());
@@ -97,7 +98,7 @@ class _AllImagesState extends State<AllImages> {
   Future<void> fetchGridViewImages() async {
     try {
       final response = await http.get(
-        Uri.parse('https://api.pexels.com/v1/curated?per_page=12&page=2'),
+        Uri.parse('https://api.pexels.com/v1/curated?per_page=89&page=2'),
         headers: {
           'Authorization': 'a7uMZCqGxAC5qTXHdepkr02KXNfOFJtk60tIW0aeNdzBQrFJILQ4ou6S',
         },
@@ -195,6 +196,10 @@ class _AllImagesState extends State<AllImages> {
                       return GestureDetector(
                         onTap: () {
                           // Handle grid view item tap
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => imageView()),
+                          );
                         },
                         child: Container(
                           decoration: BoxDecoration(

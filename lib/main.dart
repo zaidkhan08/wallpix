@@ -43,8 +43,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-final pages =[AllImages(),Home(),imageView()];
-final pageController = PageController(initialPage: 2);
+final pages =[AllImages(),Home(),Favorite()];
+final pageController = PageController(initialPage: 0);
 int currentSelected = 0;
 
   @override
