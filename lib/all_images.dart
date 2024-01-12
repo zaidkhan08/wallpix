@@ -79,7 +79,7 @@ class _AllImagesState extends State<AllImages> {
   Future<void> fetchGridViewImages() async {
     try {
       final response = await http.get(
-        Uri.parse('https://api.pexels.com/v1/curated?per_page=36&page=1'),
+        Uri.parse('https://api.pexels.com/v1/curated?per_page=199&page=6'),
         headers: {
           'Authorization': 'a7uMZCqGxAC5qTXHdepkr02KXNfOFJtk60tIW0aeNdzBQrFJILQ4ou6S',
         },
