@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:walllhang/imageView.dart';
-
 void main() {
   runApp(MyApp());
 }
@@ -78,17 +76,15 @@ class _AllImagesState extends State<AllImages> {
   Future<void> fetchPageViewImages() async {
     try {
       final response = await http.get(
-        Uri.parse('https://api.pexels.com/v1/curated?per_page=4&page=9'),
+        Uri.parse('https://api.unsplash.com/photos/random?count=4'),
         headers: {
-          'Authorization': 'a7uMZCqGxAC5qTXHdepkr02KXNfOFJtk60tIW0aeNdzBQrFJILQ4ou6S',
+          'Authorization': 'Client-ID VkJ1pjeHCeggkyQ7sq7aSeB5vddGTEuWYB6jdrZdvYA', // Replace 'YourUnsplashAccessKey' with your actual Unsplash Access Key
         },
       );
 
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      final List<dynamic> photos = data['photos'];
+      final List<dynamic> data = jsonDecode(response.body);
       setState(() {
-        pageViewImages =
-        List<String>.from(photos.map((item) => item['src']['large'] as String));
+        pageViewImages = List<String>.from(data.map((item) => item['urls']['regular'] as String));
       });
     } catch (error) {
       print('Error fetching images: $error');
@@ -98,17 +94,15 @@ class _AllImagesState extends State<AllImages> {
   Future<void> fetchGridViewImages() async {
     try {
       final response = await http.get(
-        Uri.parse('https://api.pexels.com/v1/curated?per_page=89&page=2'),
+        Uri.parse('https://api.unsplash.com/photos/random?count=40'),
         headers: {
-          'Authorization': 'a7uMZCqGxAC5qTXHdepkr02KXNfOFJtk60tIW0aeNdzBQrFJILQ4ou6S',
+          'Authorization': 'Client-ID VkJ1pjeHCeggkyQ7sq7aSeB5vddGTEuWYB6jdrZdvYA', // Replace 'YourUnsplashAccessKey' with your actual Unsplash Access Key
         },
       );
 
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      final List<dynamic> photos = data['photos'];
+      final List<dynamic> data = jsonDecode(response.body);
       setState(() {
-        gridViewImages =
-        List<String>.from(photos.map((item) => item['src']['large'] as String));
+        gridViewImages = List<String>.from(data.map((item) => item['urls']['regular'] as String));
       });
     } catch (error) {
       print('Error fetching images: $error');
@@ -195,7 +189,7 @@ class _AllImagesState extends State<AllImages> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          // Handle grid view item tap
+                          // Navigate to the second screen when tapped
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => imageView()),
@@ -232,6 +226,30 @@ class _AllImagesState extends State<AllImages> {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: _currentPage == index ? Colors.white : Colors.grey,
+      ),
+    );
+  }
+}
+
+class FullScreenImageWidget extends StatelessWidget {
+  final String imageUrl;
+
+  const FullScreenImageWidget({required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        onTap: () {
+          // Close the full-screen widget on tap
+          Navigator.pop(context);
+        },
+        child: Center(
+          child: Image.network(
+            imageUrl,
+            fit: BoxFit.fitWidth,
+          ),
+        ),
       ),
     );
   }
