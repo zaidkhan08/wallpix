@@ -93,7 +93,9 @@ class _AllImagesState extends State<Home> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       image: DecorationImage(
-                        image: NetworkImage(gridViewImages[index]),
+                        image: NetworkImage(
+                            gridViewImages[index],
+                        ),
                         fit: BoxFit.cover,
                       ),
                     ),
