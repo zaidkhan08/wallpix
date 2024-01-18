@@ -5,7 +5,6 @@ import 'package:walllhang/all_images.dart';
 import 'package:walllhang/fav.dart';
 import 'package:walllhang/home.dart';
 import 'package:walllhang/imageView.dart';
-import 'package:walllhang/searchbar.dart';
 import 'searchbar.dart';
 import 'imageView.dart';
 
@@ -16,7 +15,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -70,6 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.only(top: 30, bottom: 24),
           child: TextField(
             onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode()); // Dismiss the keyboard
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Search()),
@@ -78,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
             style: TextStyle(color: Colors.white),
             cursorColor: Colors.transparent, // Set the cursor color to transparent
             enableInteractiveSelection: false,
+            autofocus: false, // Disable autofocus
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white24,
@@ -93,6 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: Icon(Icons.search, color: Colors.white54),
                 onPressed: () {
                   // Handle search logic here
+                  FocusScope.of(context).requestFocus(FocusNode()); // Dismiss the keyboard
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => Search()),

@@ -14,8 +14,10 @@ class _SearchState extends State<Search> {
   void initState() {
     super.initState();
     _focusNode = FocusNode();
-    Future.delayed(Duration.zero, () {
-      _focusNode.requestFocus();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Future.delayed(Duration(milliseconds: 300), () {
+        _focusNode.requestFocus();
+      });
     });
   }
 
@@ -33,6 +35,7 @@ class _SearchState extends State<Search> {
         backgroundColor: Colors.black,
         title: TextField(
           focusNode: _focusNode,
+          style: TextStyle(color: Colors.blue),
           decoration: InputDecoration(
             hintText: 'Search...',
             hintStyle: TextStyle(color: Colors.white38),
@@ -40,7 +43,7 @@ class _SearchState extends State<Search> {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
-                color: Colors.white54, // Change this color to your desired focus color
+                color: Colors.white54,
               ),
             ),
             border: OutlineInputBorder(
@@ -48,6 +51,29 @@ class _SearchState extends State<Search> {
             ),
           ),
         ),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Small containers
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: List.generate(
+                4, // Replace with the number of containers you want
+                    (index) => Container(
+                  width: 110,
+                  height: 40,
+                  margin: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.grey, // Customize the color as needed
+                    borderRadius: BorderRadius.circular(12), // Customize the border radius
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
