@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:walllhang/ai.dart';
-import 'package:walllhang/imageView.dart';
+import 'package:walllhang/homebtn/floral.dart';
+import 'package:walllhang/homebtn/luxury.dart';
+import 'package:walllhang/homebtn/nature.dart';
+import 'package:walllhang/homebtn/visual.dart';
 
 void main() {
   runApp(MyApp());
@@ -73,6 +75,9 @@ class _AllImagesState extends State<AllImages> {
   Future<void> fetchImages() async {
     await fetchPageViewImages();
     await fetchGridViewImages();
+
+    // Start auto-scrolling after fetching images
+    startAutoScroll();
   }
 
   Future<void> fetchPageViewImages() async {
@@ -80,7 +85,7 @@ class _AllImagesState extends State<AllImages> {
       final response = await http.get(
         Uri.parse('https://api.unsplash.com/photos/random?count=4'),
         headers: {
-          'Authorization': 'Client-ID VkJ1pjeHCeggkyQ7sq7aSeB5vddGTEuWYB6jdrZdvYA', // Replace 'YourUnsplashAccessKey' with your actual Unsplash Access Key
+          'Authorization': 'Client-ID VkJ1pjeHCeggkyQ7sq7aSeB5vddGTEuWYB6jdrZdvYA',
         },
       );
 
@@ -89,7 +94,7 @@ class _AllImagesState extends State<AllImages> {
         pageViewImages = List<String>.from(data.map((item) => item['urls']['regular'] as String));
       });
     } catch (error) {
-      print('Error fetching images: $error');
+      print('Error fetching page view images: $error');
     }
   }
 
@@ -98,7 +103,7 @@ class _AllImagesState extends State<AllImages> {
       final response = await http.get(
         Uri.parse('https://api.unsplash.com/photos/random?count=60'),
         headers: {
-          'Authorization': 'Client-ID VkJ1pjeHCeggkyQ7sq7aSeB5vddGTEuWYB6jdrZdvYA', // Replace 'YourUnsplashAccessKey' with your actual Unsplash Access Key
+          'Authorization': 'Client-ID VkJ1pjeHCeggkyQ7sq7aSeB5vddGTEuWYB6jdrZdvYA',
         },
       );
 
@@ -107,7 +112,7 @@ class _AllImagesState extends State<AllImages> {
         gridViewImages = List<String>.from(data.map((item) => item['urls']['regular'] as String));
       });
     } catch (error) {
-      print('Error fetching images: $error');
+      print('Error fetching grid view images: $error');
     }
   }
 
@@ -182,6 +187,76 @@ class _AllImagesState extends State<AllImages> {
                     ],
                   ),
                 ),
+                SizedBox(
+                  height: 50,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Floral(),
+                              ),
+                            );
+                            // Handle button 1 tap
+                            print('Button 1 tapped');
+                          },
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.white24),),
+                          child: Text('floral',style: TextStyle(color: Colors.white),),
+                        ),
+                        SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Visual(),
+                              ),
+                            );
+                            // Handle button 2 tap
+                            print('Button 2 tapped');
+                          },
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.white24),),
+                          child: Text('visual',style: TextStyle(color: Colors.white)),
+                        ),
+                        SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Nature(),
+                              ),
+                            );
+                            // Handle button 3 tap
+                            print('Button 3 tapped');
+                          },
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.white24),),
+                          child: Text('Nature',style: TextStyle(color: Colors.white)),
+                        ),
+                        SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Luxury(),
+                              ),
+                            );
+                            // Handle button 4 tap
+                            print('Button 4 tapped');
+                          },
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.white24),),
+                          child: Text('Luxury',style: TextStyle(color: Colors.white)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -197,10 +272,10 @@ class _AllImagesState extends State<AllImages> {
                         return GestureDetector(
                           onTap: () {
                             // Navigate to the second screen when tapped
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => imageView()),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context) => imageView()),
+                            // );
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -234,30 +309,6 @@ class _AllImagesState extends State<AllImages> {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: _currentPage == index ? Colors.white : Colors.grey,
-      ),
-    );
-  }
-}
-
-class FullScreenImageWidget extends StatelessWidget {
-  final String imageUrl;
-
-  const FullScreenImageWidget({required this.imageUrl});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          // Close the full-screen widget on tap
-          Navigator.pop(context);
-        },
-        child: Center(
-          child: Image.network(
-            imageUrl,
-            fit: BoxFit.fitWidth,
-          ),
-        ),
       ),
     );
   }
