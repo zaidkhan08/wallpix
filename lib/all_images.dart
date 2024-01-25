@@ -199,7 +199,7 @@ class _AllImagesState extends State<AllImages> {
                             // Navigate to the second screen when tapped
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => AiImageGenerator()),
+                              MaterialPageRoute(builder: (context) => imageView()),
                             );
                           },
                           child: Container(

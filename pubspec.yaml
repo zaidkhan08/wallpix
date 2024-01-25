@@ -42,8 +42,6 @@ dependencies:
   http: ^0.13.3
   full_screen_image: ^2.0.0
   photo_view: ^0.14.0
-  tflite_flutter: ^0.8.0
-  tflite_flutter_helper: ^0.2.0
   image_picker: ^1.0.7
 
 

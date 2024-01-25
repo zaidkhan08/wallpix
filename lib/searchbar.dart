@@ -1,4 +1,7 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -9,6 +12,8 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   late FocusNode _focusNode;
+  TextEditingController _searchController = TextEditingController();
+  List<String> unsplashImages = [];
 
   @override
   void initState() {
@@ -18,13 +23,51 @@ class _SearchState extends State<Search> {
       Future.delayed(Duration(milliseconds: 300), () {
         _focusNode.requestFocus();
       });
+      fetchRandomUnsplashImages();
     });
   }
 
   @override
   void dispose() {
     _focusNode.dispose();
+    _searchController.dispose();
     super.dispose();
+  }
+
+  Future<void> fetchRandomUnsplashImages() async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://api.unsplash.com/photos/random?count=8'),
+        headers: {
+          'Authorization': 'Client-ID VkJ1pjeHCeggkyQ7sq7aSeB5vddGTEuWYB6jdrZdvYA',
+        },
+      );
+
+      final List<dynamic> data = jsonDecode(response.body);
+      setState(() {
+        unsplashImages = List<String>.from(data.map((item) => item['urls']['regular'] as String));
+      });
+    } catch (error) {
+      print('Error fetching images: $error');
+    }
+  }
+
+  Future<void> fetchUnsplashImages(String query) async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://api.unsplash.com/photos/random?count=70&query=$query'),
+        headers: {
+          'Authorization': 'Client-ID VkJ1pjeHCeggkyQ7sq7aSeB5vddGTEuWYB6jdrZdvYA',
+        },
+      );
+
+      final List<dynamic> data = jsonDecode(response.body);
+      setState(() {
+        unsplashImages = List<String>.from(data.map((item) => item['urls']['regular'] as String));
+      });
+    } catch (error) {
+      print('Error fetching images: $error');
+    }
   }
 
   @override
@@ -34,8 +77,12 @@ class _SearchState extends State<Search> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: TextField(
+          controller: _searchController,
           focusNode: _focusNode,
           style: TextStyle(color: Colors.blue),
+          onSubmitted: (query) {
+            query.isEmpty ? fetchRandomUnsplashImages() : fetchUnsplashImages(query);
+          },
           decoration: InputDecoration(
             hintText: 'Search...',
             hintStyle: TextStyle(color: Colors.white38),
@@ -52,28 +99,28 @@ class _SearchState extends State<Search> {
           ),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Small containers
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: List.generate(
-                4, // Replace with the number of containers you want
-                    (index) => Container(
-                  width: 110,
-                  height: 40,
-                  margin: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.grey, // Customize the color as needed
-                    borderRadius: BorderRadius.circular(12), // Customize the border radius
-                  ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 15.0,
+            mainAxisSpacing: 12.0,
+            childAspectRatio: 0.5,
+          ),
+          itemCount: unsplashImages.length,
+          itemBuilder: (context, index) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                image: DecorationImage(
+                  image: NetworkImage(unsplashImages[index]),
+                  fit: BoxFit.cover,
                 ),
               ),
-            ),
-          ),
-        ],
+            );
+          },
+        ),
       ),
     );
   }
