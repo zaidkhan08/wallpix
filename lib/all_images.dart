@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:walllhang/home.dart';
 import 'package:walllhang/homebtn/floral.dart';
-import 'package:walllhang/homebtn/luxury.dart';
 import 'package:walllhang/homebtn/nature.dart';
 import 'package:walllhang/homebtn/visual.dart';
 
@@ -31,6 +31,8 @@ class _AllImagesState extends State<AllImages> {
   List<String> pageViewImages = [];
   List<String> gridViewImages = [];
   int _currentPage = 0;
+
+  Set<String> uniqueGridViewImages = Set(); // Keep track of unique images
 
   @override
   void initState() {
@@ -74,7 +76,7 @@ class _AllImagesState extends State<AllImages> {
 
   Future<void> fetchImages() async {
     await fetchPageViewImages();
-    await fetchGridViewImages();
+    await fetchGridViewImages(1); // Fetch the first page of grid view images
 
     // Start auto-scrolling after fetching images
     startAutoScroll();
@@ -98,18 +100,25 @@ class _AllImagesState extends State<AllImages> {
     }
   }
 
-  Future<void> fetchGridViewImages() async {
+  Future<void> fetchGridViewImages(int page) async {
     try {
       final response = await http.get(
-        Uri.parse('https://api.unsplash.com/photos/random?count=60'),
+        Uri.parse('https://api.unsplash.com/photos/random?count=30&page=$page'),
         headers: {
           'Authorization': 'Client-ID VkJ1pjeHCeggkyQ7sq7aSeB5vddGTEuWYB6jdrZdvYA',
         },
       );
 
       final List<dynamic> data = jsonDecode(response.body);
+
+      // Filter out duplicate images
+      List<String> newImages = List<String>.from(data.map((item) => item['urls']['regular'] as String))
+          .where((image) => !uniqueGridViewImages.contains(image))
+          .toList();
+
       setState(() {
-        gridViewImages = List<String>.from(data.map((item) => item['urls']['regular'] as String));
+        gridViewImages.addAll(newImages);
+        uniqueGridViewImages.addAll(newImages);
       });
     } catch (error) {
       print('Error fetching grid view images: $error');
@@ -117,6 +126,14 @@ class _AllImagesState extends State<AllImages> {
   }
 
   Future<void> refresh() async {
+    // Clear the previous data to avoid duplicates on refresh
+    setState(() {
+      pageViewImages.clear();
+      gridViewImages.clear();
+      uniqueGridViewImages.clear();
+    });
+
+    // Fetch new images after clearing the data
     await fetchImages();
   }
 
@@ -187,76 +204,7 @@ class _AllImagesState extends State<AllImages> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 50,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Floral(),
-                              ),
-                            );
-                            // Handle button 1 tap
-                            print('Button 1 tapped');
-                          },
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.white24),),
-                          child: Text('floral',style: TextStyle(color: Colors.white),),
-                        ),
-                        SizedBox(width: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Visual(),
-                              ),
-                            );
-                            // Handle button 2 tap
-                            print('Button 2 tapped');
-                          },
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.white24),),
-                          child: Text('visual',style: TextStyle(color: Colors.white)),
-                        ),
-                        SizedBox(width: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Nature(),
-                              ),
-                            );
-                            // Handle button 3 tap
-                            print('Button 3 tapped');
-                          },
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.white24),),
-                          child: Text('Nature',style: TextStyle(color: Colors.white)),
-                        ),
-                        SizedBox(width: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Luxury(),
-                              ),
-                            );
-                            // Handle button 4 tap
-                            print('Button 4 tapped');
-                          },
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.white24),),
-                          child: Text('Luxury',style: TextStyle(color: Colors.white)),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
