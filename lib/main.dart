@@ -13,7 +13,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title});
 
   final String title;
 
@@ -39,7 +39,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final pages = [AllImages(), Home(), Favorite(),];
+  final pages = [AllImages(), Home(), ai()];
   final pageController = PageController(initialPage: 0);
   int currentSelected = 0;
 
@@ -63,28 +63,28 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Container(
+        title: currentSelected != 2
+            ? Container(
           height: 100,
           padding: EdgeInsets.only(top: 30, bottom: 24),
           child: TextField(
             onTap: () {
-              FocusScope.of(context).requestFocus(FocusNode()); // Dismiss the keyboard
+              FocusScope.of(context).requestFocus(FocusNode());
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Search()),
               );
             },
             style: TextStyle(color: Colors.white),
-            cursorColor: Colors.transparent, // Set the cursor color to transparent
+            cursorColor: Colors.transparent,
             enableInteractiveSelection: false,
-            autofocus: false, // Disable autofocus
+            autofocus: false,
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white24,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
                 borderSide: BorderSide(color: Colors.transparent),
-                // Set border color when focused
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -92,8 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
               prefixIcon: IconButton(
                 icon: Icon(Icons.search, color: Colors.white54),
                 onPressed: () {
-                  // Handle search logic here
-                  FocusScope.of(context).requestFocus(FocusNode()); // Dismiss the keyboard
+                  FocusScope.of(context).requestFocus(FocusNode());
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => Search()),
@@ -102,7 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-        ),
+        )
+            : null,
         backgroundColor: Colors.black,
       ),
       bottomNavigationBar: CurvedNavigationBar(
@@ -133,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
         itemBuilder: (BuildContext context, int index) {
           return pages[index];
         },
-        physics: NeverScrollableScrollPhysics(), // Disable swipe
+        physics: NeverScrollableScrollPhysics(),
       ),
     );
   }
