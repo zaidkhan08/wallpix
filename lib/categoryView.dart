@@ -79,7 +79,6 @@ class categoryView extends StatelessWidget {
                         ),
                         height: 500,
                         width: 50,
-
                       ),
                     ),
                 )

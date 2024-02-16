@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:walllhang/screens/categoryBlock.dart';
+import 'package:walllhang/api/apiOperations.dart';
+import 'package:walllhang/Models/categoryModels.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -10,6 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _AllImagesState extends State<Home> {
+  late List<CategoryModel> CatModList;
   PageController _pageController = PageController();
   List<String> images = [
     "https://picsum.photos/seed/picsum/200/300",
@@ -19,22 +23,35 @@ class _AllImagesState extends State<Home> {
 
   ];
 
-  List<String> gridViewImages = [
-  "https://picsum.photos/300/201",
-  "https://picsum.photos/300/202",
-  "https://picsum.photos/300/203",
-  "https://picsum.photos/300/204",
-    "https://picsum.photos/300/205",
-    "https://picsum.photos/300/206",
-    "https://picsum.photos/300/207",
-    "https://picsum.photos/300/208",
-    "https://picsum.photos/300/209",
+  GetCatDetails() async {
+    CatModList = await apiOperations.getCategoriesList();
+    print("GETTTING CAT MOD LIST");
+    print(CatModList);
+    setState(() {
+      CatModList = CatModList;
+    });
+  }
 
-  ];
+  // List<String> gridViewImages = [
+  // "https://picsum.photos/300/201",
+  // "https://picsum.photos/300/202",
+  // "https://picsum.photos/300/203",
+  // "https://picsum.photos/300/204",
+  //   "https://picsum.photos/300/205",
+  //   "https://picsum.photos/300/206",
+  //   "https://picsum.photos/300/207",
+  //   "https://picsum.photos/300/208",
+  //   "https://picsum.photos/300/209",
+  //
+  // ];
 
   int _currentPage = 0;
 
   @override
+  void initState(){
+    super.initState();
+    GetCatDetails();
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
@@ -87,21 +104,12 @@ class _AllImagesState extends State<Home> {
                   crossAxisSpacing: 8.0,
                   mainAxisSpacing: 8.0,
                 ),
-                itemCount: gridViewImages.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      image: DecorationImage(
-                        image: NetworkImage(
-                            gridViewImages[index],
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  );
-                },
-              ),
+                itemCount: CatModList.length,
+                itemBuilder: (context, index) => catBlock(
+                  categoryImgSrc: CatModList[index].catImgUrl,
+                  categoryName: CatModList[index].catName,
+              )
+             ),
             ),
 
           ],
