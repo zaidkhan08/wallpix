@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 
 class imageView extends StatelessWidget {
-  const imageView({super.key});
-
+  String imgUrl;
+  imageView({super.key, required this.imgUrl});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,11 +17,13 @@ class imageView extends StatelessWidget {
             children: [
               Center(
                 child: ClipRRect(
-                  child: Image.network(
-                    "https://images.unsplash.com/photo-1555353540-64580b51c258?q=80&w=1956&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                  child: Container(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(imgUrl), fit: BoxFit.cover)),
                     width: 360,
                     height: 500,
-                    fit: BoxFit.cover,
+
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),

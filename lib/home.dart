@@ -101,8 +101,8 @@ class _AllImagesState extends State<Home> {
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
-                  crossAxisSpacing: 8.0,
-                  mainAxisSpacing: 8.0,
+                  crossAxisSpacing: 0.0,
+                  mainAxisSpacing: 10.0,
                 ),
                 itemCount: CatModList.length,
                 itemBuilder: (context, index) => catBlock(

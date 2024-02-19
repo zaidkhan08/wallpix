@@ -6,6 +6,8 @@ import 'package:walllhang/home.dart';
 import 'package:walllhang/homebtn/floral.dart';
 import 'package:walllhang/homebtn/nature.dart';
 import 'package:walllhang/homebtn/visual.dart';
+import 'package:walllhang/imageView.dart';
+import 'package:walllhang/imageView2.dart';
 
 void main() {
   runApp(MyApp());
@@ -178,6 +180,7 @@ class _AllImagesState extends State<AllImages> {
                               child: GestureDetector(
                                 onTap: () {
                                   // Handle page view item tap
+
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -219,11 +222,11 @@ class _AllImagesState extends State<AllImages> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            // Navigate to the second screen when tapped
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => imageView()),
-                            // );
+                            //Navigate to the second screen when tapped
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => imageView(imgUrl: gridViewImages[index % gridViewImages.length],)),
+                            );
                           },
                           child: Container(
                             decoration: BoxDecoration(
