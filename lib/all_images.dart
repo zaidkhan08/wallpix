@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+//import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:walllhang/imageView.dart';
 
 void main() {
   runApp(MyApp());
@@ -323,13 +325,13 @@ class _AllImagesState extends State<AllImages> {
                           return Center(child: CircularProgressIndicator());
                         }
 
-                        return GestureDetector(
+                        return InkWell(
                           onTap: () {
                             // Navigate to the second screen when tapped
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => imageView()),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => imageView(imgUrl: gridViewImages[index % gridViewImages.length], imgName: "New Car",)),
+                            );
                           },
                           child: Container(
                             decoration: BoxDecoration(

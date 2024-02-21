@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 class imageView extends StatelessWidget {
   String imgUrl;
-  imageView({super.key, required this.imgUrl});
+  String imgName;
+  imageView({super.key, required this.imgUrl, required this.imgName});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +37,7 @@ class imageView extends StatelessWidget {
                       child: Container(
                         padding: EdgeInsets.only(left: 20),
                         child: Text(
-                          "Car01",
+                          imgName,
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
