@@ -1,84 +1,94 @@
 import 'package:flutter/material.dart';
-import 'package:walllhang/api/rest.dart';
 
-void main() => runApp(const ai());
-
-class ai extends StatelessWidget {
-  const ai({super.key});
+class categoryView extends StatelessWidget {
+  const categoryView({super.key});
 
   @override
-  Widget build(BuildContext context) => const MaterialApp(
-    home: MyHomePage(),
-    debugShowCheckedModeBanner: false,
-  );
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final textController = TextEditingController();
-
-  bool isLoading = false;
-
-  @override
-  Widget build(BuildContext context) => SafeArea(
-    child: Scaffold(
-      backgroundColor: const Color(0XFF27374D),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: textController,
-              decoration: InputDecoration(
-                hintText: 'Enter your prompt',
-                fillColor: Colors.white,
-                filled: true,
-                contentPadding: const EdgeInsets.all(16),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+            Stack(
+              children: [
+                Image.network(
+                  "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                  height: 150,
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.cover,
                 ),
-                labelStyle: const TextStyle(color: Colors.red),
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            SizedBox(
-              width: 150,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0XFF9DB2BF),
+                Container(
+                  height: 150,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.black38,
                 ),
-                onPressed: () {
-                  convertTextToImage(textController.text, context);
-                  isLoading = true;
+                Center(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 35,),
+                        Text(
+                          "Category",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                        Text(
+                          "Cars",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    )
+                ),
+              ],
+            ),
+            SizedBox(height: 20,),
+            Container(
+              height: MediaQuery.of(context).size.height,
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisExtent: 300,
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 13,
+                  mainAxisSpacing: 10,
+                ),
+                itemCount: 30,
+                physics: BouncingScrollPhysics(),
+                itemBuilder: ((context, index) => GridTile(
+                  child: InkWell(
+                    onTap: (){},
+                    child: Container(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.network(
+                          "https://images.unsplash.com/photo-1514316454349-750a7fd3da3a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                          height: 500,
+                          width: 50,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.teal,
+                      ),
+                      height: 500,
+                      width: 50,
 
-                  setState(() {});
-                },
-                child: isLoading
-                    ? const SizedBox(
-                    height: 15,
-                    width: 15,
-                    child:
-                    CircularProgressIndicator(color: Colors.black))
-                    : const Text('Generate Image',
-                    style: TextStyle(color: Colors.black)),
+                    ),
+                  ),
+                )
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 30,
             ),
           ],
         ),
       ),
-    ),
-  );
+    );
+  }
 }
