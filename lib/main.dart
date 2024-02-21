@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:walllhang/all_images.dart';
@@ -67,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: currentSelected != 2
             ? Container(
           height: 100,
+          width: 900,
           padding: EdgeInsets.only(top: 30, bottom: 24),
           child: Row(
             children: [
@@ -79,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 2,
                 ),
               ),
-              Spacer(), // Add spacer to push icons to the right
+              Spacer(),
               IconButton(
                 icon: Icon(Icons.search_outlined, color: Colors.white),
                 onPressed: () {
@@ -90,24 +93,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
               ),
-              Transform.scale(
-                scale: 1.5,
-                child: IconButton(
-                  icon: Icon(Icons.account_circle, color: Colors.white),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Profile()),
-                    );
-                    // Add the action when the profile icon is tapped
-                  },
-                ),
-              ),
             ],
           ),
         )
             : null,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Colors.white), // Change menu button color
       ),
       body: Stack(
         children: [
@@ -138,9 +129,9 @@ class _MyHomePageState extends State<MyHomePage> {
               backgroundColor: Colors.transparent,
               color: Colors.black54,
               items: [
-                Icon(Icons.home, size: 30,color: Colors.white,),
-                Icon(Icons.category_outlined, size: 30,color: Colors.white,),
-                Icon(Icons.memory, size: 30,color: Colors.white,),
+                Icon(Icons.home, size: 30, color: Colors.white),
+                Icon(Icons.category_outlined, size: 30, color: Colors.white),
+                Icon(Icons.memory, size: 30, color: Colors.white),
               ],
               onTap: (int index) {
                 setState(() {
@@ -151,6 +142,62 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ],
+      ),
+      endDrawer: Drawer(
+        // Add your drawer content here
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              accountName: Text("User Name"),
+              accountEmail: Text("user@example.com"),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(
+                  Icons.account_circle,
+                  size: 64,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Log out',style: TextStyle(fontWeight: FontWeight.bold),),
+              onTap: () {
+                // Update the UI based on the item selected
+                // Close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.contacts),
+              title: Text('Contact us',style: TextStyle(fontWeight: FontWeight.bold),),
+              onTap: () {
+                // Update the UI based on the item selected
+                // Close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.share_sharp),
+              title: Text('Share',style: TextStyle(fontWeight: FontWeight.bold,),),
+              onTap: () {
+                // Update the UI based on the item selected
+                // Close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.report),
+              title: Text('Report',style: TextStyle(fontWeight: FontWeight.bold,),),
+              onTap: () {
+                // Update the UI based on the item selected
+                // Close the drawer
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
