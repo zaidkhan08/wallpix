@@ -43,6 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final pages = [AllImages(), Home(), ai()];
   final pageController = PageController(initialPage: 0);
   int currentSelected = 0;
+  bool _isDrawerOpen = false;
 
   @override
   void initState() {
@@ -56,6 +57,106 @@ class _MyHomePageState extends State<MyHomePage> {
           currentSelected = currentIndex;
         });
       }
+    });
+  }
+
+  void _openDrawer() {
+    setState(() {
+      _isDrawerOpen = true;
+    });
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          child: Column(
+            children: [
+              UserAccountsDrawerHeader(
+                accountName: Text('User Name'),
+                accountEmail: Text('user@example.com'),
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Icon(
+                    Icons.account_circle,
+                    size: 64,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              Expanded( // Wrap ListView with Expanded
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.login),
+                      title: Text(
+                        'Log in',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.contacts),
+                      title: Text(
+                        'Contact us',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.share_sharp),
+                      title: Text(
+                        'Share',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.report),
+                      title: Text(
+                        'Report',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.report),
+                      title: Text(
+                        'Report',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.report),
+                      title: Text(
+                        'Report',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    ).whenComplete(() {
+      setState(() {
+        _isDrawerOpen = false;
+      });
     });
   }
 
@@ -96,7 +197,14 @@ class _MyHomePageState extends State<MyHomePage> {
         )
             : null,
         backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color: Colors.white), // Change menu button color
+        iconTheme:
+        IconThemeData(color: Colors.white), // Change menu button color
+        actions: [
+          IconButton(
+            icon: Icon(_isDrawerOpen ? Icons.close : Icons.menu),
+            onPressed: _openDrawer,
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -140,62 +248,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ],
-      ),
-      endDrawer: Drawer(
-        // Add your drawer content here
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text("User Name"),
-              accountEmail: Text("user@example.com"),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.account_circle,
-                  size: 64,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Log out',style: TextStyle(fontWeight: FontWeight.bold),),
-              onTap: () {
-                // Update the UI based on the item selected
-                // Close the drawer
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.contacts),
-              title: Text('Contact us',style: TextStyle(fontWeight: FontWeight.bold),),
-              onTap: () {
-                // Update the UI based on the item selected
-                // Close the drawer
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.share_sharp),
-              title: Text('Share',style: TextStyle(fontWeight: FontWeight.bold,),),
-              onTap: () {
-                // Update the UI based on the item selected
-                // Close the drawer
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.report),
-              title: Text('Report',style: TextStyle(fontWeight: FontWeight.bold,),),
-              onTap: () {
-                // Update the UI based on the item selected
-                // Close the drawer
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
       ),
     );
   }

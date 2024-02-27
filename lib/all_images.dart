@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-//import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:walllhang/imageView.dart';
@@ -26,7 +25,12 @@ class AllImages extends StatefulWidget {
 
 class _AllImagesState extends State<AllImages> {
   PageController _pageController = PageController();
-  List<String> pageViewImages = [];
+  List<String> pageViewImages = [
+    'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjg0MC0wNi0wOV8xLmpwZw.jpg',
+    'https://i.pinimg.com/originals/bd/b2/29/bdb229e4ee8046c922104ae32b99bc17.png',
+    'https://thumbs.dreamstime.com/z/d-word-vacation-tropical-paradise-island-palm-trees-sun-tents-sail-boat-ocean-day-63462376.jpg',
+    'https://i.pinimg.com/originals/5b/12/18/5b12182d594590211cfb4b31f8c2be95.jpg',
+  ];
   List<String> gridViewImages = [];
   int _currentPage = 0;
   int _gridViewPage = 1;
@@ -83,18 +87,19 @@ class _AllImagesState extends State<AllImages> {
       if (_pageController.hasClients) {
         _pageController.animateToPage(
           (_currentPage + 1) % pageViewImages.length,
-          duration: Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
+          duration: Duration(milliseconds: 400),
+          curve: Curves.easeIn,
         );
       }
     });
   }
 
   Future<void> fetchImages() async {
-    await fetchPageViewImages();
-    await fetchGridViewImages(_gridViewPage); // Fetch the first page of grid view images
+    // No need to fetch images as they are added manually
     startAutoScroll(); // Start auto-scrolling after fetching images
   }
+
+  // Remaining code remains the same
 
   Future<void> fetchPageViewImages() async {
     try {
@@ -236,14 +241,13 @@ class _AllImagesState extends State<AllImages> {
 
   Future<void> refresh() async {
     setState(() {
-      pageViewImages.clear();
       gridViewImages.clear();
       uniqueGridViewImages.clear();
       currentApiKeyIndex = 0; // Reset API key index to use the first key after a refresh
       apiRequestSucceeded = false; // Reset API request status
     });
 
-    await fetchImages();
+    await fetchGridViewImages(_gridViewPage);
 
     // Check if any API request succeeded
     if (!apiRequestSucceeded) {
@@ -281,13 +285,19 @@ class _AllImagesState extends State<AllImages> {
                               width: double.infinity,
                               child: GestureDetector(
                                 onTap: () {
-                                  // Handle page view item tap
+                                  // Handle tap on the entire item if needed
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
-                                  child: Image.network(
-                                    pageViewImages[index],
-                                    fit: BoxFit.cover,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      // Handle tap on individual image
+                                      print('Tapped on image at index $index');
+                                    },
+                                    child: Image.network(
+                                      pageViewImages[index],
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               ),
