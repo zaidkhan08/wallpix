@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "477955767192",
+    "project_id": "wallpix-3a886",
+    "storage_bucket": "wallpix-3a886.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477955767192:android:3bba67e5edda4e1c7fc9ed",
+        "android_client_info": {
+          "package_name": "com.example.walllhang"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3EdpKRhVxsGQ5BE5xJoYwmZRbCAH3wAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

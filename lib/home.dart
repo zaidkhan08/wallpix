@@ -84,19 +84,33 @@ class _AllImagesState extends State<Home> {
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(bottom: 8),
-              child: Text(
-                '- - -  Select Your Favourite Catagory  - - -',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  wordSpacing: 10,
-                  height: 2,
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.white70,
+                      )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Text(
+                      "Select your Favorite Category",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.white70,
+                      )
+                  )
+                ],
               ),
             ),
-
+            SizedBox(height: 25,),
             Expanded(
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

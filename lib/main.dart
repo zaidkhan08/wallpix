@@ -4,12 +4,19 @@ import 'package:walllhang/all_images.dart';
 import 'package:walllhang/api/rest.dart';
 import 'package:walllhang/fav.dart';
 import 'package:walllhang/home.dart';
+import 'package:walllhang/login.dart';
 import 'package:walllhang/profilepage/profile.dart';
 import 'searchbar.dart';
 import 'imageView.dart';
 import 'imggen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -116,6 +123,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       onTap: () {
                         Navigator.pop(context);
+                        Navigator.push(context,
+                            MaterialPageRoute(
+                              builder: (context) => loginView())
+                        );
                       },
                     ),
                     ListTile(
