@@ -1,74 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:walllhang/Widgets/button_tile.dart';
 import 'package:walllhang/Widgets/my_button.dart';
 import 'package:walllhang/Widgets/my_textField.dart';
 
-class loginView extends StatefulWidget {
-  loginView({super.key});
+class loginView extends StatelessWidget {
+  loginView({Key? key});
 
-  @override
-  State<loginView> createState() => _loginViewState();
-}
-
-class _loginViewState extends State<loginView> {
-  //text editing controllers
-  final emailController = TextEditingController();
-
+  // Text editing controllers
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  // user sign in Function
-  void signUserIn() async {
-    // show loading
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-    );
+  // User sign-in Function
+  void signUserIn() {}
 
-    // Try to sign in
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text
-      );
-
-      // close loading
-      Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {
-      // close loading
-      Navigator.pop(context);
-      // WRONG Email
-      if(e.code == 'user-not-found'){
-        showErrorMsg('Wrong Email');
-      }
-      // WRONG Password
-      else if (e.code == 'wrong-password'){
-        showErrorMsg('Wrong password');
-      }
-    }
-  }
-
-  void showErrorMsg(String message){
-    showDialog(
-        context: context,
-        builder: (context){
-          return AlertDialog(
-            backgroundColor: Colors.deepPurpleAccent,
-            title: Center(
-              child: Text(
-                  message,
-                style: const TextStyle(color: Colors.white),
-              ),
-            )
-          );
-        }
-    );
-  }
+  bool _isObscure = true; // Track password visibility
 
   @override
   Widget build(BuildContext context) {
@@ -80,54 +25,57 @@ class _loginViewState extends State<loginView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 40,),
-
-                // LOGO
-                // const Icon(
-                //   Icons.format_paint_rounded,
-                //   size: 100,
-                // ),
-                //
+                SizedBox(height: 40),
                 Image(
-                  image: AssetImage(
-                    'lib/images/logo.png',
-                  ),
+                  image: AssetImage('lib/images/logo.png'),
                   height: 100,
                 ),
-
-
-                const SizedBox(height: 40,),
-
-                // welcome message
+                SizedBox(height: 40),
                 Text(
-                    'Welcome back you\'ve been missed!',
+                  'Welcome back you\'ve been missed!',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 16,
                   ),
                 ),
-
-                const SizedBox(height: 20,),
-
-                // email TextField
+                SizedBox(height: 20),
+                // Username TextField
                 my_textField(
-                  controller: emailController,
-                  hintText: 'Email',
+                  controller: usernameController,
+                  hintText: 'Username',
                   obscureText: false,
                 ),
-
-                const SizedBox(height: 10,),
-
-                // password TextField
-                my_textField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
+                SizedBox(height: 10),
+                // Password TextField
+                Stack(
+                  alignment: Alignment.centerRight,
+                  children: [
+                    my_textField(
+                      controller: passwordController,
+                      hintText: 'Password',
+                      obscureText: _isObscure,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // Toggle password visibility
+                        _isObscure = !_isObscure;
+                        // Refresh UI
+                        (context as Element).markNeedsBuild();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 40.0),
+                        child: Icon(
+                          _isObscure
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-
-                const SizedBox(height: 10,),
-
-                // forgot password?
+                SizedBox(height: 10),
+                // Forgot password?
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
@@ -140,82 +88,72 @@ class _loginViewState extends State<loginView> {
                     ],
                   ),
                 ),
-
-                const SizedBox(height: 10,),
-
-                // sign in button
+                SizedBox(height: 10),
+                // Sign-in button
                 myButton(
                   onTap: signUserIn,
                 ),
-
-                const SizedBox(height: 40,),
-
-                // or Continue with msg
+                SizedBox(height: 40),
+                // Or Continue with message
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
                     children: [
                       Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Colors.grey[400],
-                          )
+                        child: Divider(
+                          thickness: 0.5,
+                          color: Colors.grey[400],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                            "Or continue with",
+                          "Or continue with",
                           style: TextStyle(color: Colors.grey[700]),
                         ),
                       ),
                       Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Colors.grey[400],
-                          )
+                        child: Divider(
+                          thickness: 0.5,
+                          color: Colors.grey[400],
+                        ),
                       )
                     ],
                   ),
                 ),
-
-                const SizedBox(height: 40,),
-                // google and facebook btn for sign in..
-                const Row(
+                SizedBox(height: 40),
+                // Google and Facebook buttons for sign-in
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // google sign in
+                    // Google sign-in
                     button_tile(imagePath: 'lib/images/google.png'),
-
-                    SizedBox(width: 25,),
-
-                    // facebook sign in
+                    SizedBox(width: 25),
+                    // Facebook sign-in
                     button_tile(imagePath: 'lib/images/facebook2.png')
                   ],
                 ),
-
-                const SizedBox(height: 40,),
-
-                // not a member? register now btn
+                SizedBox(height: 40),
+                // Not a member? Register now button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                        "Not a member?",
+                      "Not a member?",
                       style: TextStyle(
                         color: Colors.grey[700],
                       ),
                     ),
-                    SizedBox(width: 4,),
+                    SizedBox(width: 4),
                     Text(
                       "Register Now",
                       style: TextStyle(
-                          color: Color(0xff088FBC),
-                        fontWeight: FontWeight.bold
+                        color: Color(0xff088FBC),
+                        fontWeight: FontWeight.bold,
                       ),
                     )
                   ],
                 ),
-
               ],
             ),
           ),

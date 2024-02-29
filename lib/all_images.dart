@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-//import 'package:walllhang/fav.dart';
 import 'package:walllhang/imageView.dart';
-import 'package:walllhang/categoryView.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -31,12 +30,6 @@ class _AllImagesState extends State<AllImages> {
     'https://i.pinimg.com/originals/bd/b2/29/bdb229e4ee8046c922104ae32b99bc17.png',
     'https://thumbs.dreamstime.com/z/d-word-vacation-tropical-paradise-island-palm-trees-sun-tents-sail-boat-ocean-day-63462376.jpg',
     'https://i.pinimg.com/originals/5b/12/18/5b12182d594590211cfb4b31f8c2be95.jpg',
-  ];
-  List<String> pageViewImgName = [
-    'Beach',
-    'Nature',
-    'Vacation',
-    'Floral'
   ];
   List<String> gridViewImages = [];
   int _currentPage = 0;
@@ -293,7 +286,6 @@ class _AllImagesState extends State<AllImages> {
                               child: GestureDetector(
                                 onTap: () {
                                   // Handle tap on the entire item if needed
-
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -301,10 +293,6 @@ class _AllImagesState extends State<AllImages> {
                                     onTap: () {
                                       // Handle tap on individual image
                                       print('Tapped on image at index $index');
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => catView(categoryImg: pageViewImages[index],categoryName: pageViewImgName[index],)),
-                                      );
                                     },
                                     child: Image.network(
                                       pageViewImages[index],
@@ -352,7 +340,7 @@ class _AllImagesState extends State<AllImages> {
                             // Navigate to the second screen when tapped
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => imageView(imgUrl: gridViewImages[index % gridViewImages.length], imgName: "New Car",)),
+                              MaterialPageRoute(builder: (context) => ImageView(imgUrl: gridViewImages[index % gridViewImages.length], imgName: "New Car",)),
                             );
                           },
                           child: Container(
