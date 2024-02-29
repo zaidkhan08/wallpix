@@ -5,18 +5,68 @@ import 'package:walllhang/Widgets/button_tile.dart';
 import 'package:walllhang/Widgets/my_button.dart';
 import 'package:walllhang/Widgets/my_textField.dart';
 
-class loginView extends StatelessWidget {
+class loginView extends StatefulWidget {
   loginView({super.key});
 
+  @override
+  State<loginView> createState() => _loginViewState();
+}
+
+class _loginViewState extends State<loginView> {
   //text editing controllers
   final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
   // user sign in Function
   void signUserIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text
+    // show loading
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+    );
+
+    // Try to sign in
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text
+      );
+
+      // close loading
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      // close loading
+      Navigator.pop(context);
+      // WRONG Email
+      if(e.code == 'user-not-found'){
+        showErrorMsg('Wrong Email');
+      }
+      // WRONG Password
+      else if (e.code == 'wrong-password'){
+        showErrorMsg('Wrong password');
+      }
+    }
+  }
+
+  void showErrorMsg(String message){
+    showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            backgroundColor: Colors.deepPurpleAccent,
+            title: Center(
+              child: Text(
+                  message,
+                style: const TextStyle(color: Colors.white),
+              ),
+            )
+          );
+        }
     );
   }
 
@@ -31,8 +81,8 @@ class loginView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 40,),
-          
-                // logo
+
+                // LOGO
                 // const Icon(
                 //   Icons.format_paint_rounded,
                 //   size: 100,
@@ -47,7 +97,7 @@ class loginView extends StatelessWidget {
 
 
                 const SizedBox(height: 40,),
-          
+
                 // welcome message
                 Text(
                     'Welcome back you\'ve been missed!',
@@ -56,27 +106,27 @@ class loginView extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-          
+
                 const SizedBox(height: 20,),
-          
+
                 // email TextField
                 my_textField(
                   controller: emailController,
                   hintText: 'Email',
                   obscureText: false,
                 ),
-          
+
                 const SizedBox(height: 10,),
-          
+
                 // password TextField
                 my_textField(
                   controller: passwordController,
                   hintText: 'Password',
                   obscureText: true,
                 ),
-          
+
                 const SizedBox(height: 10,),
-          
+
                 // forgot password?
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -90,16 +140,16 @@ class loginView extends StatelessWidget {
                     ],
                   ),
                 ),
-          
+
                 const SizedBox(height: 10,),
-          
+
                 // sign in button
                 myButton(
                   onTap: signUserIn,
                 ),
-          
+
                 const SizedBox(height: 40,),
-          
+
                 // or Continue with msg
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -127,7 +177,7 @@ class loginView extends StatelessWidget {
                     ],
                   ),
                 ),
-          
+
                 const SizedBox(height: 40,),
                 // google and facebook btn for sign in..
                 const Row(
@@ -135,16 +185,16 @@ class loginView extends StatelessWidget {
                   children: [
                     // google sign in
                     button_tile(imagePath: 'lib/images/google.png'),
-          
+
                     SizedBox(width: 25,),
-          
+
                     // facebook sign in
                     button_tile(imagePath: 'lib/images/facebook2.png')
                   ],
                 ),
-          
+
                 const SizedBox(height: 40,),
-          
+
                 // not a member? register now btn
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -165,7 +215,7 @@ class loginView extends StatelessWidget {
                     )
                   ],
                 ),
-          
+
               ],
             ),
           ),

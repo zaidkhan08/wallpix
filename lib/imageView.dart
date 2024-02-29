@@ -24,7 +24,6 @@ class imageView extends StatelessWidget {
                             image: NetworkImage(imgUrl), fit: BoxFit.cover)),
                     width: 360,
                     height: 500,
-
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),

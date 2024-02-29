@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:walllhang/all_images.dart';
@@ -14,9 +15,15 @@ import 'package:firebase_core/firebase_core.dart';
 
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title});
+  MyHomePage({Key? key, required this.title});
 
   final String title;
+
+  void signUserOut() {
+    FirebaseAuth.instance.signOut();
+  }
+
+
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -28,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int currentSelected = 0;
   bool _isDrawerOpen = false;
   bool _isSearchOpen = false;
-
+  final user = FirebaseAuth.instance.currentUser!;
   @override
   void initState() {
     super.initState();
@@ -40,6 +47,11 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       }
     });
+  }
+
+  // sign out using Firebase
+  void signUserOut() {
+    FirebaseAuth.instance.signOut();
   }
 
   void _openDrawer() {
@@ -56,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   UserAccountsDrawerHeader(
                     accountName: Text('User Name'),
-                    accountEmail: Text('user@example.com'),
+                    accountEmail: Text( user.email! ),
                     currentAccountPicture: CircleAvatar(
                       backgroundColor: Colors.white,
                       child: Icon(
@@ -91,18 +103,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
+
                     ListTile(
                       leading: Icon(Icons.login),
                       title: Text(
-                        'Log in',
+                        'Log out',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       onTap: () {
                         Navigator.pop(context);
-                        Navigator.push(context,
-                            MaterialPageRoute(
-                                builder: (context) => loginView())
-                        );
+                        signUserOut();
                       },
                     ),
                     ListTile(
@@ -287,3 +297,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
