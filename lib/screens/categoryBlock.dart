@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:walllhang/categoryView.dart';
 
 class catBlock extends StatelessWidget {
   String categoryName;
@@ -7,11 +8,7 @@ class catBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (){
-
-      },
-      child: Container(
+    return Container(
         margin: EdgeInsets.symmetric(horizontal: 7),
         child: Stack(
           children: [
@@ -45,7 +42,6 @@ class catBlock extends StatelessWidget {
             )
           ],
         ),
-      ),
     );
   }
 }

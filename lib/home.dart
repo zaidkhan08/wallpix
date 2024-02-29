@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:walllhang/categoryView.dart';
 import 'package:walllhang/screens/categoryBlock.dart';
 import 'package:walllhang/api/apiOperations.dart';
 import 'package:walllhang/Models/categoryModels.dart';
@@ -119,10 +120,22 @@ class _AllImagesState extends State<Home> {
                   mainAxisSpacing: 10.0,
                 ),
                 itemCount: CatModList.length,
-                itemBuilder: (context, index) => catBlock(
-                  categoryImgSrc: CatModList[index].catImgUrl,
-                  categoryName: CatModList[index].catName,
-              )
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: (){
+                      print("Tap");
+                      // Go to Second Screen .. currently NOT Working
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => catView(categoryImg: CatModList[index].catImgUrl,categoryName: CatModList[index].catName,)),
+                      );
+                    },
+                    child: catBlock(
+                      categoryImgSrc: CatModList[index].catImgUrl,
+                      categoryName: CatModList[index].catName,
+                    ),
+                  );
+                }
              ),
             ),
 
