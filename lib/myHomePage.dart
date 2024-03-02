@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:walllhang/all_images.dart';
 import 'package:walllhang/api/rest.dart';
+import 'package:walllhang/draweritems/contactus.dart';
 import 'package:walllhang/fav.dart';
 import 'package:walllhang/home.dart';
 import 'package:walllhang/login.dart';
@@ -30,7 +31,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final pages = [AllImages(), Home(), ai()];
+  final pages = [AllImages(), Home(), AIApp()];
   final pageController = PageController(initialPage: 0);
   int currentSelected = 0;
   bool _isDrawerOpen = false;
@@ -105,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
 
                     ListTile(
-                      leading: Icon(Icons.login),
+                      leading: Icon(Icons.logout),
                       title: Text(
                         'Log out',
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -122,7 +123,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       onTap: () {
-                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Gmail()),
+                        );
                       },
                     ),
                     ListTile(

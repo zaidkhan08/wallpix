@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 class ImageView extends StatefulWidget {
   final String imgUrl;
@@ -15,11 +15,17 @@ class ImageView extends StatefulWidget {
 
 class _ImageViewState extends State<ImageView> {
   late Future<List<String>> _futureImages;
+  late String _currentTime;
+  late String _currentDay;
+  bool _isLiked = false;
+  bool _isHoldingImage = false;
 
   @override
   void initState() {
     super.initState();
     _futureImages = fetchImagesFromAPI();
+    _updateTime();
+    _updateDay();
   }
 
   Future<List<String>> fetchImagesFromAPI() async {
@@ -42,107 +48,198 @@ class _ImageViewState extends State<ImageView> {
     }
   }
 
+  void _toggleLike() {
+    setState(() {
+      _isLiked = !_isLiked;
+      if (_isLiked) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Added to favorites'),
+            duration: Duration(seconds: 1),
+            backgroundColor: Colors.green[600],
+            elevation: 6,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            behavior: SnackBarBehavior.floating,
+            action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () {
+                setState(() {
+                  _isLiked = !_isLiked;
+                });
+              },
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Removed from favorites'),
+            duration: Duration(seconds: 1),
+            backgroundColor: Colors.red[600],
+            elevation: 6,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            behavior: SnackBarBehavior.floating,
+            action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () {
+                setState(() {
+                  _isLiked = !_isLiked;
+                });
+              },
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  void _updateTime() {
+    setState(() {
+      _currentTime = DateFormat('hh:mm a').format(DateTime.now());
+    });
+    Future.delayed(Duration(minutes: 1) - Duration(seconds: DateTime.now().second), () {
+      _updateTime();
+    });
+  }
+
+  void _updateDay() {
+    setState(() {
+      _currentDay = DateFormat('EEEE, d, MMMM').format(DateTime.now());
+    });
+    Future.delayed(Duration(minutes: 1), () {
+      _updateDay();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Container(
-        padding: EdgeInsets.only(top: 70),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: ClipRRect(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(widget.imgUrl),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    width: 360,
-                    height: 500,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6.0),
-                child: Row(
+      body: GestureDetector(
+        onLongPressStart: (_) {
+          setState(() {
+            _isHoldingImage = true;
+          });
+        },
+        onLongPressEnd: (_) {
+          setState(() {
+            _isHoldingImage = false;
+          });
+        },
+        child: Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Text(
-                          widget.imgName,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
+                    Center(
+                      child: Stack(
+                        children: [
+                          InteractiveViewer(
+                            scaleEnabled: true,
+                            child: ClipRRect(
+                              child: Image.network(
+                                widget.imgUrl,
+                                fit: BoxFit.cover,
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            boundaryMargin: EdgeInsets.all(20),
+                            minScale: 0.1,
+                            maxScale: 4.0,
                           ),
-                        ),
+                          Positioned(
+                            top: 20,
+                            left: 0,
+                            right: 0,
+                            child: Visibility(
+                              visible: !_isHoldingImage,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 87), // Add padding
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      _currentTime,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 48, // Increase font size
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 4), // Add spacing
+                                    Text(
+                                      _currentDay,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18, // Day font size
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Icon(
-                        CupertinoIcons.heart,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: Text("Apply"),
-                      style: ButtonStyle(),
                     ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  "Recommended",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 20,
+              child: Visibility(
+                visible: !_isHoldingImage,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 40, right: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 200,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: Text('Apply'),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: _toggleLike,
+                          child: AnimatedSwitcher(
+                            duration: Duration(milliseconds: 300),
+                            transitionBuilder: (Widget child, Animation<double> animation) {
+                              return ScaleTransition(scale: animation, child: child);
+                            },
+                            child: Icon(
+                              _isLiked ? Icons.favorite : Icons.favorite_border,
+                              color: _isLiked ? Colors.red : Colors.white,
+                              size: 38,
+                              key: UniqueKey(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-              SizedBox(height: 10),
-              FutureBuilder<List<String>>(
-                future: _futureImages,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (snapshot.hasData) {
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 4.0,
-                        mainAxisSpacing: 4.0,
-                      ),
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        return Image.network(
-                          snapshot.data![index],
-                          fit: BoxFit.cover,
-                        );
-                      },
-                    );
-                  } else {
-                    return Text('No data');
-                  }
-                },
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
