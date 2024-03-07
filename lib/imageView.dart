@@ -117,27 +117,45 @@ class _ImageViewState extends State<ImageView> {
     });
   }
 
-  Future<void> setWallpaper(int location) async {
+  Future<void> setWallpaperHome() async {
     String url = widget.imgUrl;
+    int location = WallpaperManager.HOME_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
     var file = await DefaultCacheManager().getSingleFile(url);
-
-    bool success = await WallpaperManager.setWallpaperFromFile(file.path, location);
-
-    if (success) {
+    try {
+      final bool result = await WallpaperManager.setWallpaperFromFile(file.path, location);
+      print(result);
+    } catch (e) {
+      print('Failed to set wallpaper: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Wallpaper applied successfully'),
+          content: Text('Failed to set wallpaper: $e'),
           duration: Duration(seconds: 1),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to apply wallpaper'),
-          duration: Duration(seconds: 1),
+          backgroundColor: Colors.red[600],
+          elevation: 6,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          behavior: SnackBarBehavior.floating,
         ),
       );
     }
+    setState(() {});
+  }
+
+  Future<void> setWallpaperLock() async {
+    String url = widget.imgUrl;
+    int location = WallpaperManager.LOCK_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
+    var file = await DefaultCacheManager().getSingleFile(url);
+    final bool result = await WallpaperManager.setWallpaperFromFile(file.path, location);
+    print(result);
+  }
+
+  Future<void> setWallpaperBoth() async {
+    String url = widget.imgUrl;
+    int location = WallpaperManager.BOTH_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
+    var file = await DefaultCacheManager().getSingleFile(url);
+    final bool result = await WallpaperManager.setWallpaperFromFile(file.path, location);
+    print(result);
   }
 
   @override
@@ -242,40 +260,38 @@ class _ImageViewState extends State<ImageView> {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Set Wallpaper'),
-                                    content: SingleChildScrollView(
-                                      child: ListBody(
-                                        children: <Widget>[
-                                          Text('Select the location to set the wallpaper:'),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              setWallpaper(WallpaperManager.HOME_SCREEN);
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text('Home Screen'),
-                                          ),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              setWallpaper(WallpaperManager.LOCK_SCREEN);
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text('Lock Screen'),
-                                          ),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              setWallpaper(WallpaperManager.HOME_SCREEN);
-                                              setWallpaper(WallpaperManager.LOCK_SCREEN);
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text('Both Screens'),
-                                          ),
-                                        ],
+                                  return SimpleDialog(
+                                    title: const Text('Choose an option'),
+                                    children: <Widget>[
+                                      SimpleDialogOption(
+                                        child: const Text('Set as Home Screen'),
+                                        onPressed: () async {
+                                          // Handle the "Set as Home Screen" option.
+                                          await setWallpaperHome();
+                                          Navigator.pop(context);
+                                        },
                                       ),
-                                    ),
+                                      SimpleDialogOption(
+                                        child: const Text('Set as Lock screen'),
+                                        onPressed: () {
+                                          // Handle the "Set as Lock screen" option.
+                                          setWallpaperLock();
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      SimpleDialogOption(
+                                        child: const Text('Set both'),
+                                        onPressed: () {
+                                          // Handle the "Set both" option.
+                                          setWallpaperBoth();
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
                                   );
                                 },
                               );
+                              //setWallpaper();
                             },
                             child: Text('Apply'),
                           ),
