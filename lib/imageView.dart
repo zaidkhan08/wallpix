@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 
 class ImageView extends StatefulWidget {
   final String imgUrl;
@@ -115,6 +117,29 @@ class _ImageViewState extends State<ImageView> {
     });
   }
 
+  Future<void> setWallpaper(int location) async {
+    String url = widget.imgUrl;
+    var file = await DefaultCacheManager().getSingleFile(url);
+
+    bool success = await WallpaperManager.setWallpaperFromFile(file.path, location);
+
+    if (success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Wallpaper applied successfully'),
+          duration: Duration(seconds: 1),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to apply wallpaper'),
+          duration: Duration(seconds: 1),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -213,7 +238,45 @@ class _ImageViewState extends State<ImageView> {
                         Container(
                           width: 200,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Set Wallpaper'),
+                                    content: SingleChildScrollView(
+                                      child: ListBody(
+                                        children: <Widget>[
+                                          Text('Select the location to set the wallpaper:'),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              setWallpaper(WallpaperManager.HOME_SCREEN);
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text('Home Screen'),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              setWallpaper(WallpaperManager.LOCK_SCREEN);
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text('Lock Screen'),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              setWallpaper(WallpaperManager.HOME_SCREEN);
+                                              setWallpaper(WallpaperManager.LOCK_SCREEN);
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text('Both Screens'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
                             child: Text('Apply'),
                           ),
                         ),

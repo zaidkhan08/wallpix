@@ -58,8 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       } finally {
         // Deduct coins after the generation is completed (successful or not)
+        if (!isLoading) {
+          // Only deduct coins if generation is successful
+          setState(() {
+            coins -= 50;
+          });
+        }
         setState(() {
-          coins -= 50;
           isLoading = false;
         });
       }
