@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 
 class ImageView extends StatefulWidget {
   final String imgUrl;
@@ -115,6 +117,47 @@ class _ImageViewState extends State<ImageView> {
     });
   }
 
+  Future<void> setWallpaperHome() async {
+    String url = widget.imgUrl;
+    int location = WallpaperManager.HOME_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
+    var file = await DefaultCacheManager().getSingleFile(url);
+    try {
+      final bool result = await WallpaperManager.setWallpaperFromFile(file.path, location);
+      print(result);
+    } catch (e) {
+      print('Failed to set wallpaper: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to set wallpaper: $e'),
+          duration: Duration(seconds: 1),
+          backgroundColor: Colors.red[600],
+          elevation: 6,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+    setState(() {});
+  }
+
+  Future<void> setWallpaperLock() async {
+    String url = widget.imgUrl;
+    int location = WallpaperManager.LOCK_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
+    var file = await DefaultCacheManager().getSingleFile(url);
+    final bool result = await WallpaperManager.setWallpaperFromFile(file.path, location);
+    print(result);
+  }
+
+  Future<void> setWallpaperBoth() async {
+    String url = widget.imgUrl;
+    int location = WallpaperManager.BOTH_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
+    var file = await DefaultCacheManager().getSingleFile(url);
+    final bool result = await WallpaperManager.setWallpaperFromFile(file.path, location);
+    print(result);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -213,7 +256,43 @@ class _ImageViewState extends State<ImageView> {
                         Container(
                           width: 200,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SimpleDialog(
+                                    title: const Text('Choose an option'),
+                                    children: <Widget>[
+                                      SimpleDialogOption(
+                                        child: const Text('Set as Home Screen'),
+                                        onPressed: () async {
+                                          // Handle the "Set as Home Screen" option.
+                                          await setWallpaperHome();
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      SimpleDialogOption(
+                                        child: const Text('Set as Lock screen'),
+                                        onPressed: () {
+                                          // Handle the "Set as Lock screen" option.
+                                          setWallpaperLock();
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      SimpleDialogOption(
+                                        child: const Text('Set both'),
+                                        onPressed: () {
+                                          // Handle the "Set both" option.
+                                          setWallpaperBoth();
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              //setWallpaper();
+                            },
                             child: Text('Apply'),
                           ),
                         ),

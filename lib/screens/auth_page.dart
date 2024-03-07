@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:walllhang/all_images.dart';
+import 'package:walllhang/loginOrRegisterPage.dart';
 import 'package:walllhang/myHomePage.dart';
 import 'package:walllhang/login.dart';
 
@@ -19,7 +20,7 @@ class AuthPage extends StatelessWidget {
           }
           // user is NOT logged in
           else{
-            return loginView();
+            return LoginOrRegisterPage();
           }
         },
       ),

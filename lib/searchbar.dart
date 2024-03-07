@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:walllhang/imageView.dart';
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -125,12 +126,21 @@ class _SearchState extends State<Search> {
           ),
           itemCount: unsplashImages.length,
           itemBuilder: (context, index) {
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                image: DecorationImage(
-                  image: NetworkImage(unsplashImages[index]),
-                  fit: BoxFit.cover,
+            return InkWell(
+              onTap: (){
+                // Navigate to the second screen when tapped
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ImageView(imgUrl: unsplashImages[index], imgName: "New Car",)),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  image: DecorationImage(
+                    image: NetworkImage(unsplashImages[index]),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             );

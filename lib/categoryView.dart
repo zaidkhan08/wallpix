@@ -11,6 +11,7 @@ class catView extends StatelessWidget {
       backgroundColor: Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
+          // Category Image and Name
           child: Column(
             children: [
               SizedBox(height: 30,),
@@ -53,6 +54,8 @@ class catView extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 20,),
+
+              // catagory wise searched images
               Container(
                 height: MediaQuery.of(context).size.height,
                 margin: EdgeInsets.symmetric(horizontal: 10),
