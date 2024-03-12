@@ -8,6 +8,7 @@ import 'package:walllhang/fav.dart';
 import 'package:walllhang/home.dart';
 import 'package:walllhang/login.dart';
 import 'package:walllhang/profilepage/profile.dart';
+import 'package:walllhang/screens/favoriteImagesView.dart';
 import 'searchbar.dart';
 import 'imageView.dart';
 import 'imggen.dart';
@@ -147,6 +148,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       onTap: () {
                         Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => favoriteImagesView()),
+                        );
                       },
                     ),
                     ListTile(

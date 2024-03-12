@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:walllhang/Widgets/button_tile.dart';
 import 'package:walllhang/Widgets/my_button.dart';
 import 'package:walllhang/Widgets/my_textField.dart';
+
+import 'screens/forgotPasswordPage.dart';
 
 class loginPage extends StatefulWidget {
   final Function()? onTap;
@@ -52,6 +55,10 @@ class _loginPageState extends State<loginPage> {
       else if (e.code == 'wrong-password') {
         showErrorMsg('Wrong Password');
       }
+
+      else {
+        showErrorMsg(e.message.toString());
+      }
     }
   }
 
@@ -61,12 +68,10 @@ class _loginPageState extends State<loginPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Colors.deepPurpleAccent,
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-            ),
+          backgroundColor: Color(0xFF03033F),
+          content: Text(
+            message,
+            style: const TextStyle(color: Colors.white),
           ),
         );
       },
@@ -138,9 +143,20 @@ class _loginPageState extends State<loginPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        "Forgot Password?",
-                        style: TextStyle(color: Colors.grey[600]),
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                              context,
+                            MaterialPageRoute(builder: (context){
+                              return ForgotPasswordPage();
+                              }
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "Forgot Password?",
+                          style: TextStyle(color: Colors.grey[600]),
+                        ),
                       ),
                     ],
                   ),

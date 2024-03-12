@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
+import 'package:walllhang/Models/favoriteImageModel.dart';
+import 'package:walllhang/utils/favoriteImagesRepo.dart';
 
 class ImageView extends StatefulWidget {
   final String imgUrl;
@@ -21,6 +25,8 @@ class _ImageViewState extends State<ImageView> {
   late String _currentDay;
   bool _isLiked = false;
   bool _isHoldingImage = false;
+  var userId = 'abc';
+  var imageUrl = '';
 
   @override
   void initState() {
@@ -28,6 +34,29 @@ class _ImageViewState extends State<ImageView> {
     _futureImages = fetchImagesFromAPI();
     _updateTime();
     _updateDay();
+
+    getUserId().then((userId) {
+      if (userId != null) {
+        isFavoriteImage(userId, widget.imgUrl).then((value) {
+          setState(() {
+            _isLiked = value;
+          });
+        });
+      }
+    });
+  }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<String?> getUserId() async {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      return user.uid;
+    } else {
+      print('No user is currently signed in');
+      return null;
+    }
   }
 
   Future<List<String>> fetchImagesFromAPI() async {
@@ -50,54 +79,185 @@ class _ImageViewState extends State<ImageView> {
     }
   }
 
-  void _toggleLike() {
-    setState(() {
-      _isLiked = !_isLiked;
-      if (_isLiked) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Added to favorites'),
-            duration: Duration(seconds: 1),
-            backgroundColor: Colors.green[600],
-            elevation: 6,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            behavior: SnackBarBehavior.floating,
-            action: SnackBarAction(
-              label: 'Undo',
-              onPressed: () {
-                setState(() {
-                  _isLiked = !_isLiked;
-                });
-              },
-            ),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Removed from favorites'),
-            duration: Duration(seconds: 1),
-            backgroundColor: Colors.red[600],
-            elevation: 6,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            behavior: SnackBarBehavior.floating,
-            action: SnackBarAction(
-              label: 'Undo',
-              onPressed: () {
-                setState(() {
-                  _isLiked = !_isLiked;
-                });
-              },
-            ),
-          ),
-        );
+  CollectionReference favorites = FirebaseFirestore.instance.collection('favorites');
+
+  // remove/delete favorite wallpaper from Firebase: FireStore
+  Future<void> deleteDocument({required String userId, required String imageUrl}) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('favorites')
+        .where('userId', isEqualTo: userId)
+        .where('imgUrl', isEqualTo: imageUrl)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      for (DocumentSnapshot doc in querySnapshot.docs) {
+        DocumentReference docRef = doc.reference;
+        await docRef.delete();
+        print('Document deleted');
       }
-    });
+    } else {
+      print('Documents not found');
+    }
   }
+
+  Future<bool> isFavoriteImage(String userId, String imageUrl) async {
+    final querySnapshot = await favorites
+        .where('userId', isEqualTo: userId)
+        .where('imgUrl', isEqualTo: imageUrl)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // add favorite wallpaper to Firebase: FireStore
+  Future<void> addUserToFavorites({required String userId, required String imageUrl}) async {
+    try {
+      await favorites.add({'userId': userId, 'imgUrl': imageUrl});
+      print('User is added to the Collection');
+    } catch (error) {
+      print('Failed to add user: $error');
+    }
+  }
+
+  //   Future<void> _toggleLike()  async {
+  //
+  //   imageUrl = widget.imgUrl;
+  //   String? userId = await getUserId();
+  //   _isLiked = await isFavoriteImage(userId!, imageUrl);
+  //   setState(() {
+  //     _isLiked = !_isLiked;
+  //     if (_isLiked) {
+  //       // add favorite wallpaper to Firebase: FireStore
+  //       if (userId != null) {
+  //         addUserToFavorites(userId: userId, imageUrl: imageUrl);
+  //       } else {
+  //         print('userId is null');
+  //       }
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           content: Text('Added to favorites'),
+  //           duration: Duration(seconds: 1),
+  //           backgroundColor: Colors.green[600],
+  //           elevation: 6,
+  //           shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(10),
+  //           ),
+  //           behavior: SnackBarBehavior.floating,
+  //           action: SnackBarAction(
+  //             label: 'Undo',
+  //             onPressed: () {
+  //               setState(() {
+  //                 _isLiked = !_isLiked;
+  //               });
+  //
+  //             },
+  //           ),
+  //         ),
+  //       );
+  //
+  //     } else {
+  //       // remove/delete favorite wallpaper from Firebase: FireStore
+  //       if (userId != null) {
+  //         deleteDocument(userId: userId, imageUrl: imageUrl);
+  //       } else {
+  //         print('userId is null');
+  //       }
+  //
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           content: Text('Removed from favorites'),
+  //           duration: Duration(seconds: 1),
+  //           backgroundColor: Colors.red[600],
+  //           elevation: 6,
+  //           shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(10),
+  //           ),
+  //           behavior: SnackBarBehavior.floating,
+  //           action: SnackBarAction(
+  //             label: 'Undo',
+  //             onPressed: ()  {
+  //               setState(() {
+  //                 _isLiked = !_isLiked;
+  //               });
+  //
+  //             },
+  //           ),
+  //         ),
+  //       );
+  //     }
+  //   });
+  // }
+
+  Future<void> _toggleLike() async {
+    imageUrl = widget.imgUrl;
+    String? userId = await getUserId();
+
+    if (userId != null) {
+      _isLiked = await isFavoriteImage(userId, imageUrl);
+      setState(() {
+        _isLiked = !_isLiked;
+      });
+
+      if (_isLiked) {
+        try {
+          await addUserToFavorites(userId: userId, imageUrl: imageUrl);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Added to favorites'),
+              duration: Duration(seconds: 1),
+              backgroundColor: Colors.green[600],
+              elevation: 6,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              behavior: SnackBarBehavior.floating,
+              action: SnackBarAction(
+                label: 'Undo',
+                onPressed: () {
+                  setState(() {
+                    _isLiked = !_isLiked;
+                  });
+                },
+              ),
+            ),
+          );
+        } catch (error) {
+          print('Failed to add favorite image: $error');
+        }
+      } else {
+        try {
+          await deleteDocument(userId: userId, imageUrl: imageUrl);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Removed from favorites'),
+              duration: Duration(seconds: 1),
+              backgroundColor: Colors.red[600],
+              elevation: 6,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              behavior: SnackBarBehavior.floating,
+              action: SnackBarAction(
+                label: 'Undo',
+                onPressed: () {
+                  setState(() {
+                    _isLiked = !_isLiked;
+                  });
+                },
+              ),
+            ),
+          );
+        } catch (error) {
+          print('Failed to remove favorite image: $error');
+        }
+      }
+    }
+  }
+
 
   void _updateTime() {
     setState(() {
@@ -160,6 +320,7 @@ class _ImageViewState extends State<ImageView> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: GestureDetector(
@@ -298,7 +459,7 @@ class _ImageViewState extends State<ImageView> {
                         ),
                         SizedBox(width: 10),
                         GestureDetector(
-                          onTap: _toggleLike,
+                          onTap: mounted ? _toggleLike : null,
                           child: AnimatedSwitcher(
                             duration: Duration(milliseconds: 300),
                             transitionBuilder: (Widget child, Animation<double> animation) {
