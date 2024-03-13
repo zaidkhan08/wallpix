@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:walllhang/Widgets/button_tile.dart';
 import 'package:walllhang/Widgets/my_button.dart';
 import 'package:walllhang/Widgets/my_textField.dart';
+import 'package:walllhang/utils/userRepo.dart';
 
 
 class registerPage extends StatefulWidget {
@@ -19,6 +21,8 @@ class _registerPageState extends State<registerPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  final _userRepo = UserRepo(FirebaseFirestore.instance);
+
 
   // user sign up/ Register User Function
   void signUserUp() async {
@@ -36,10 +40,18 @@ class _registerPageState extends State<registerPage> {
     try {
       // check if password and confirm password are same
       if (passwordController.text == confirmPasswordController.text){
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        final UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: emailController.text,
             password: passwordController.text
         );
+
+        // get the user's ID
+        final String userId = userCredential.user!.uid;
+
+        // add 200 pixCoins to the user's account
+        await _userRepo.addUsersCoins(userId: userId, pixCoins: 200);
+
+
         // close loading
         Navigator.pop(context);
       }else{
@@ -52,14 +64,8 @@ class _registerPageState extends State<registerPage> {
     } on FirebaseAuthException catch (e) {
       // close loading
       Navigator.pop(context);
-      // WRONG Email
-      if (e.code == 'user-not-found') {
-        showErrorMsg('Wrong Email');
-      }
-      // WRONG Password
-      else if (e.code == 'wrong-password') {
-        showErrorMsg('Wrong password');
-      }
+      // ERROR
+      showErrorMsg(e.message.toString());
     }
 
   }
@@ -70,11 +76,15 @@ class _registerPageState extends State<registerPage> {
         builder: (context){
           return AlertDialog(
               backgroundColor: Colors.deepPurpleAccent,
-              title: Center(
+              title: const Center(
                 child: Text(
-                  message,
-                  style: const TextStyle(color: Colors.white),
+                  "Failed to Register",
+                  style: TextStyle(color: Colors.white),
                 ),
+              ),
+              content: Text(
+              message,
+              style: const TextStyle(color: Colors.white),
               )
           );
         }
@@ -99,7 +109,7 @@ class _registerPageState extends State<registerPage> {
                 //   size: 100,
                 // ),
                 //
-                Image(
+                const Image(
                   image: AssetImage(
                     'lib/images/logo.png',
                   ),
@@ -210,10 +220,10 @@ class _registerPageState extends State<registerPage> {
                         color: Colors.grey[700],
                       ),
                     ),
-                    SizedBox(width: 4,),
+                    const SizedBox(width: 4,),
                     GestureDetector(
                       onTap: widget.onTap,
-                      child: Text(
+                      child: const Text(
                         "Login Now",
                         style: TextStyle(
                             color: Color(0xff088FBC),

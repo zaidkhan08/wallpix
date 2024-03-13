@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:walllhang/categoryView.dart';
 import 'package:walllhang/screens/categoryBlock.dart';
 import 'package:walllhang/api/apiOperations.dart';
@@ -15,6 +13,7 @@ class Home extends StatefulWidget {
 
 class _AllImagesState extends State<Home> {
   late List<CategoryModel> CatModList;
+  bool isLoading = true;
   PageController _pageController = PageController();
   List<String> images = [
     "https://picsum.photos/seed/picsum/200/300",
@@ -26,10 +25,8 @@ class _AllImagesState extends State<Home> {
 
   GetCatDetails() async {
     CatModList = await apiOperations.getCategoriesList();
-    print("GETTTING CAT MOD LIST");
-    print(CatModList);
     setState(() {
-      CatModList = CatModList;
+      isLoading = false;
     });
   }
 
@@ -56,16 +53,17 @@ class _AllImagesState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Container(
-        child: Column(
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
           children: [
-
             Container(
               height: 130,
-              padding: EdgeInsets.only(top: 4 ,left: 8,right: 8),
-              child: Expanded(
+              padding: const EdgeInsets.only(top: 4 ,left: 8,right: 8),
+              child: SizedBox(
+                height: 60,
                 child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
                     crossAxisSpacing: 8.0,
                     mainAxisSpacing: 8.0,
@@ -85,8 +83,8 @@ class _AllImagesState extends State<Home> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: Row(
                 children: [
                   Expanded(
@@ -96,7 +94,7 @@ class _AllImagesState extends State<Home> {
                       )
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
                     child: Text(
                       "Select your Favorite Category",
                       style: TextStyle(color: Colors.white),
@@ -111,10 +109,10 @@ class _AllImagesState extends State<Home> {
                 ],
               ),
             ),
-            SizedBox(height: 25,),
+            const SizedBox(height: 25,),
             Expanded(
               child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   crossAxisSpacing: 0.0,
                   mainAxisSpacing: 10.0,
@@ -141,15 +139,14 @@ class _AllImagesState extends State<Home> {
 
           ],
         ),
-      ),
-    );
-  }
+      );
+    }
 
   Widget buildIndicator(int index) {
     return Container(
         width: 8.0,
         height: 20.0,
-        margin: EdgeInsets.symmetric(horizontal: 4.0),
+        margin: const EdgeInsets.symmetric(horizontal: 4.0),
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _currentPage == index ? Colors.white : Colors.grey,

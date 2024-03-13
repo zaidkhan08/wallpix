@@ -55,7 +55,6 @@ class _loginPageState extends State<loginPage> {
       else if (e.code == 'wrong-password') {
         showErrorMsg('Wrong Password');
       }
-
       else {
         showErrorMsg(e.message.toString());
       }
@@ -68,10 +67,13 @@ class _loginPageState extends State<loginPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Color(0xFF03033F),
+          backgroundColor: Colors.white,
+          title: const Text("Failed to Login"),
           content: Text(
             message,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(
+                color: Color(0xFF03033F)
+            ),
           ),
         );
       },
@@ -98,7 +100,7 @@ class _loginPageState extends State<loginPage> {
                 //   size: 100,
                 // ),
                 //
-                Image(
+                const Image(
                   image: AssetImage(
                     'lib/images/logo.png',
                   ),
