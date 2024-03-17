@@ -25,7 +25,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final textController = TextEditingController();
-  final _firestore = FirebaseFirestore.instance;
   final _userRepo = UserRepo(FirebaseFirestore.instance);
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -58,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
       String? userId = await getUserId();
       if (userId != null) {
         print('User ID: $userId'); // print the user ID
-        int coins = await _userRepo.checkPixCoins(userId);
+        int coins = await _userRepo.checkPixCoins(userId, 200);
         print('Coins: $coins');
         setState(() {
           this.userId = userId;
@@ -85,6 +84,10 @@ class _MyHomePageState extends State<MyHomePage> {
       try {
         // Attempt image generation
         await convertTextToImage(textController.text, context);
+
+        // Deduct coins after the generation is successful
+        await _userRepo.deductCoins(userId, 50);
+        _loadUserCoins();
       } catch (e) {
         // If image generation fails, show an error dialog
         showDialog(
@@ -105,14 +108,6 @@ class _MyHomePageState extends State<MyHomePage> {
           },
         );
       } finally {
-        // Deduct coins after the generation is completed (successful or not)
-        if (!isGenerating) {
-          // Only deduct coins if generation is successful
-          setState(() async {
-            await _userRepo.deductCoins(userId, 50);
-            _loadUserCoins();
-          });
-        }
         setState(() {
           isGenerating = false;
         });

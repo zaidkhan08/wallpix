@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:walllhang/Widgets/button_tile.dart';
 import 'package:walllhang/Widgets/my_button.dart';
 import 'package:walllhang/Widgets/my_textField.dart';
+import 'package:walllhang/screens/auth_service.dart';
 
 import 'screens/forgotPasswordPage.dart';
 
@@ -60,6 +61,8 @@ class _loginPageState extends State<loginPage> {
       }
     }
   }
+
+
 
   void showErrorMsg(String message){
     print('Showing error message: $message');
@@ -204,16 +207,22 @@ class _loginPageState extends State<loginPage> {
 
                 const SizedBox(height: 40,),
                 // google and facebook btn for sign in..
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // google sign in
-                    button_tile(imagePath: 'lib/images/google.png'),
+                    button_tile(
+                        imagePath: 'lib/images/google.png',
+                      onTap: () =>  AuthService().signInWithGoogle(),
+                    ),
 
                     SizedBox(width: 25,),
 
                     // facebook sign in
-                    button_tile(imagePath: 'lib/images/facebook2.png')
+                    button_tile(
+                        imagePath: 'lib/images/facebook2.png',
+                      onTap:(){},
+                    )
                   ],
                 ),
 

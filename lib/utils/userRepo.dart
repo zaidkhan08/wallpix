@@ -12,7 +12,7 @@ class UserRepo {
 
     if (snapshot.docs.isNotEmpty) {
       final data = snapshot.docs.first.data() as Map<String, dynamic>;
-      final int currentCoins = data['pixCoins'] as int;
+      final num currentCoins = data['pixCoins'] as num;
       await _firestore.collection('users').doc(snapshot.docs.first.id).update({
         'pixCoins': currentCoins + coins,
       });
@@ -27,7 +27,7 @@ class UserRepo {
 
     if (snapshot.docs.isNotEmpty) {
       final data = snapshot.docs.first.data() as Map<String, dynamic>;
-      final int currentCoins = data['pixCoins'] as int;
+      final num currentCoins = data['pixCoins'] as num;
       await _firestore.collection('users').doc(snapshot.docs.first.id).update({
         'pixCoins': currentCoins - coins,
       });
@@ -46,14 +46,24 @@ class UserRepo {
   }
 
   // check how many coins do user have
-  Future<int> checkPixCoins(String userId) async {
+  Future<int> checkPixCoins(String userId, int pixCoins) async {
     final QuerySnapshot snapshot = await _firestore.collection('users').where('userId', isEqualTo: userId).get();
 
     if (snapshot.docs.isNotEmpty) {
       final data = snapshot.docs.first.data() as Map<String, dynamic>;
       return data['pixCoins'] as int;
     } else {
-      throw Exception('User not found');
+      try {
+        await _firestore.collection('users').doc(userId).set({
+          'userId': userId,
+          'pixCoins': pixCoins,
+        });
+        print('User Registered with $pixCoins Coins');
+      } catch (error) {
+        print('Failed to register or add Coins: $error');
+      }
+      print('User not found; created user');
+      return 200;
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:walllhang/all_images.dart';
 import 'package:walllhang/api/rest.dart';
 import 'package:walllhang/draweritems/contactus.dart';
@@ -53,6 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // sign out using Firebase
   void signUserOut() {
+    GoogleSignIn().signOut();
     FirebaseAuth.instance.signOut();
   }
 

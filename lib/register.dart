@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:walllhang/Widgets/button_tile.dart';
 import 'package:walllhang/Widgets/my_button.dart';
 import 'package:walllhang/Widgets/my_textField.dart';
+import 'package:walllhang/screens/auth_service.dart';
 import 'package:walllhang/utils/userRepo.dart';
 
 
@@ -71,24 +72,24 @@ class _registerPageState extends State<registerPage> {
   }
 
   void showErrorMsg(String message){
+    print('Showing error message: $message');
     showDialog(
-        context: context,
-        builder: (context){
-          return AlertDialog(
-              backgroundColor: Colors.deepPurpleAccent,
-              title: const Center(
-                child: Text(
-                  "Failed to Register",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              content: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-              )
-          );
-        }
-    );
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: const Text("Failed to Register"),
+          content: Text(
+            message,
+            style: const TextStyle(
+                color: Color(0xFF03033F)
+            ),
+          ),
+        );
+      },
+    ).then((value) {
+      print('Dialog closed');
+    });
   }
 
   @override
@@ -195,16 +196,22 @@ class _registerPageState extends State<registerPage> {
 
                 const SizedBox(height: 40,),
                 // google and facebook btn for sign in..
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // google sign in
-                    button_tile(imagePath: 'lib/images/google.png'),
+                    button_tile(
+                        imagePath: 'lib/images/google.png',
+                      onTap: () => AuthService().signInWithGoogle(),
+                    ),
 
                     SizedBox(width: 25,),
 
                     // facebook sign in
-                    button_tile(imagePath: 'lib/images/facebook2.png')
+                    button_tile(
+                        imagePath: 'lib/images/facebook2.png',
+                      onTap: () {},
+                    )
                   ],
                 ),
 

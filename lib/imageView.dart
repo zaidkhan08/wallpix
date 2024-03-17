@@ -6,8 +6,6 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
-import 'package:walllhang/Models/favoriteImageModel.dart';
-import 'package:walllhang/utils/favoriteImagesRepo.dart';
 
 class ImageView extends StatefulWidget {
   final String imgUrl;
