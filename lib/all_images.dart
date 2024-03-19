@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:walllhang/imageView.dart';
-import 'package:walllhang/categoryView.dart';
+import 'package:walllhang/categoryImageView.dart';
 
 void main() {
   runApp(MyApp());
@@ -304,7 +304,7 @@ class _AllImagesState extends State<AllImages> {
                                       print('Tapped on image at index $index');
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => catView(categoryImg: pageViewImages[index],categoryName: pageViewImgName[index],)),
+                                        MaterialPageRoute(builder: (context) => catImageView(categoryImg: pageViewImages[index],categoryName: pageViewImgName[index],)),
                                       );
                                     },
                                     child: Image.network(
@@ -335,7 +335,7 @@ class _AllImagesState extends State<AllImages> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 12.0,
                         mainAxisSpacing: 12.0,

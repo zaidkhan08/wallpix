@@ -108,7 +108,7 @@ class _SearchState extends State<Search> {
         leading: Padding(
           padding: const EdgeInsets.only(left: 10),
           child: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white24),
+            icon: const Icon(Icons.arrow_back, color: Colors.white24),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -118,7 +118,7 @@ class _SearchState extends State<Search> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 15.0,
             mainAxisSpacing: 12.0,

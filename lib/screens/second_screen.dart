@@ -35,7 +35,7 @@ class _SecondScreenState extends State<SecondScreen> {
                   padding: const EdgeInsets.all(20.0),
                   child: ElevatedButton(
                     onPressed: _saveImage,
-                    child: Text('Save Image'),
+                    child: const Text('Save Image'),
                   ),
                 ),
               ],

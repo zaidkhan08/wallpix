@@ -3,17 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:walllhang/all_images.dart';
-import 'package:walllhang/api/rest.dart';
 import 'package:walllhang/draweritems/contactus.dart';
-import 'package:walllhang/fav.dart';
 import 'package:walllhang/home.dart';
-import 'package:walllhang/login.dart';
-import 'package:walllhang/profilepage/profile.dart';
 import 'package:walllhang/screens/favoriteImagesView.dart';
 import 'searchbar.dart';
-import 'imageView.dart';
 import 'imggen.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 
 
 
@@ -57,6 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
     GoogleSignIn().signOut();
     FirebaseAuth.instance.signOut();
   }
+  
+  String extractUsername(String email) {
+    return email.substring(0, email.indexOf('@'));
+  }
 
   void _openDrawer() {
     setState(() {
@@ -65,122 +64,131 @@ class _MyHomePageState extends State<MyHomePage> {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return Container(
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  UserAccountsDrawerHeader(
-                    accountName: Text('User Name'),
-                    accountEmail: Text( user.email! ),
-                    currentAccountPicture: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: Icon(
-                        Icons.account_circle,
-                        size: 64,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(
-                            "https://images.unsplash.com/photo-1552250575-e508473b090f?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
-                        fit: BoxFit.cover,
+        return Column(
+          children: [
+            Stack(
+              children: [
+
+                UserAccountsDrawerHeader(
+                  accountName: Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Text(
+                      extractUsername(user.email!),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24
                       ),
                     ),
                   ),
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: Text(
-                      '-Welcome to Wallpix',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
+                  accountEmail: Text( user.email! ),
+                  currentAccountPicture: const CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.account_circle,
+                      size: 64,
+                      color: Colors.grey,
                     ),
+                  ),
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          "https://images.unsplash.com/photo-1552250575-e508473b090f?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const Positioned(
+                  top: 8,
+                  right: 8,
+                  child: Text(
+                    '-Welcome to Wallpix',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Expanded(
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+
+                  ListTile(
+                    leading: Icon(Icons.logout),
+                    title: const Text(
+                      'Log out',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      signUserOut();
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.contacts),
+                    title: const Text(
+                      'Contact us',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Gmail()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.favorite_rounded),
+                    title: const Text(
+                      'Favorites',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => favoriteImagesView()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.share_sharp),
+                    title: const Text(
+                      'Share',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.report),
+                    title: const Text(
+                      'Report',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.report),
+                    title: const Text(
+                      'Report',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
                   ),
                 ],
               ),
-              Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-
-                    ListTile(
-                      leading: Icon(Icons.logout),
-                      title: Text(
-                        'Log out',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        signUserOut();
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.contacts),
-                      title: Text(
-                        'Contact us',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Gmail()),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.share_sharp),
-                      title: Text(
-                        'Share',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.report),
-                      title: Text(
-                        'Report',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => favoriteImagesView()),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.report),
-                      title: Text(
-                        'Report',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.report),
-                      title: Text(
-                        'Report',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     ).whenComplete(() {
@@ -218,34 +226,34 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: currentSelected != 2
             ? AnimatedCrossFade(
-          firstChild: Text(
-            'Wallpixx',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              wordSpacing: 10,
-              height: 2,
-            ),
-          ),
-          secondChild: Container(
-            width: 200,
-            child: TextField(
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                hintText: 'Search...',
-                hintStyle: TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(
-                    color: Colors.white,
+              firstChild: const Text(
+                'Wallpix',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  wordSpacing: 10,
+                  height: 2,
+                ),
+              ),
+              secondChild: Container(
+                width: 200,
+                child: TextField(
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: 'Search...',
+                    hintStyle: TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
                   ),
                 ),
-                filled: true,
-                fillColor: Colors.white,
-                contentPadding: EdgeInsets.symmetric(horizontal: 10),
               ),
-            ),
-          ),
           crossFadeState: _isSearchOpen
               ? CrossFadeState.showSecond
               : CrossFadeState.showFirst,

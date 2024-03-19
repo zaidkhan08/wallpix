@@ -94,14 +94,14 @@ class _MyHomePageState extends State<MyHomePage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Failed to Generate Image"),
-              content: Text("An error occurred while generating the image."),
+              title: const Text("Failed to Generate Image"),
+              content: const Text("An error occurred while generating the image."),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("OK"),
+                  child: const Text("OK"),
                 ),
               ],
             );
@@ -118,14 +118,14 @@ class _MyHomePageState extends State<MyHomePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Not Enough Coins"),
-            content: Text("You don't have enough coins."),
+            title: const Text("Not Enough Coins"),
+            content: const Text("You don't have enough coins."),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text("OK"),
+                child: const Text("OK"),
               ),
             ],
           );
@@ -190,7 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 top: 20.0,
                 right: 20.0,
                 child: Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.0),
@@ -198,14 +198,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(width: 5.0),
+                      const SizedBox(width: 5.0),
                       Text(
                         '$coins',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(width: 5.0),
-                      Icon(
+                      const SizedBox(width: 5.0),
+                      const Icon(
                         Icons.control_point,
                         color: Colors.green,
                       ),

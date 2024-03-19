@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:walllhang/categoryView.dart';
+import 'package:walllhang/categoryImageView.dart';
 
 class catBlock extends StatelessWidget {
   String categoryName;
@@ -9,7 +9,7 @@ class catBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.symmetric(horizontal: 7),
+        margin: const EdgeInsets.symmetric(horizontal: 7),
         child: Stack(
           children: [
             ClipRRect(

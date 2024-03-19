@@ -44,6 +44,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(child: const Icon(Icons.arrow_back_ios_rounded, color: Colors.white,), onTap: (){ Navigator.pop(context); },),
+        centerTitle: true,
         backgroundColor: Color(0xFF03033F),
         elevation: 0,
       ),

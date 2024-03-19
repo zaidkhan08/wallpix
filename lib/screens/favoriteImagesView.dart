@@ -13,7 +13,7 @@ class favoriteImagesView extends StatefulWidget {
 class _favoriteImagesViewState extends State<favoriteImagesView> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String userId = "";
-  late Stream<QuerySnapshot> users;
+  late final Stream<QuerySnapshot> users;
 
   @override
   void initState() {
@@ -147,7 +147,6 @@ class _favoriteImagesViewState extends State<favoriteImagesView> {
           ),
         ],
       ),
-
     );
   }
 }

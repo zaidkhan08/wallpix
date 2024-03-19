@@ -8,6 +8,7 @@ import 'package:walllhang/Widgets/my_button.dart';
 import 'package:walllhang/Widgets/my_textField.dart';
 import 'package:walllhang/screens/auth_service.dart';
 
+import 'Widgets/my_passwordFiel.dart';
 import 'screens/forgotPasswordPage.dart';
 
 class loginPage extends StatefulWidget {
@@ -134,10 +135,9 @@ class _loginPageState extends State<loginPage> {
                 const SizedBox(height: 10,),
 
                 // password TextField
-                my_textField(
+                passwordField(
                   controller: passwordController,
                   hintText: 'Password',
-                  obscureText: true,
                 ),
 
                 const SizedBox(height: 10,),

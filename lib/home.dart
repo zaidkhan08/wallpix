@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:walllhang/categoryView.dart';
-import 'package:walllhang/screens/categoryBlock.dart';
+import 'package:walllhang/categoryImageView.dart';
+import 'package:walllhang/Widgets/categoryBlock.dart';
 import 'package:walllhang/api/apiOperations.dart';
 import 'package:walllhang/Models/categoryModels.dart';
 
@@ -125,7 +125,7 @@ class _AllImagesState extends State<Home> {
                       // Go to Second Screen .. currently NOT Working
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => catView(categoryImg: CatModList[index].catImgUrl,categoryName: CatModList[index].catName,)),
+                        MaterialPageRoute(builder: (context) => catImageView(categoryImg: CatModList[index].catImgUrl,categoryName: CatModList[index].catName,)),
                       );
                     },
                     child: catBlock(
