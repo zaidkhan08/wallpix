@@ -5,6 +5,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:walllhang/all_images.dart';
 import 'package:walllhang/draweritems/contactus.dart';
 import 'package:walllhang/home.dart';
+import 'package:walllhang/login.dart';
+import 'package:walllhang/plans.dart';
+import 'package:walllhang/profilepage/profile.dart';
 import 'package:walllhang/screens/favoriteImagesView.dart';
 import 'searchbar.dart';
 import 'imggen.dart';
@@ -52,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
     GoogleSignIn().signOut();
     FirebaseAuth.instance.signOut();
   }
-  
+
   String extractUsername(String email) {
     return email.substring(0, email.indexOf('@'));
   }
@@ -173,7 +176,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     onTap: () {
                       Navigator.pop(context);
-                    },
+                    Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Plans()),
+                        );},
                   ),
                   ListTile(
                     leading: const Icon(Icons.report),
