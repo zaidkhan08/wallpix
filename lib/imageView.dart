@@ -121,75 +121,6 @@ class _ImageViewState extends State<ImageView> {
     }
   }
 
-  //   Future<void> _toggleLike()  async {
-  //
-  //   imageUrl = widget.imgUrl;
-  //   String? userId = await getUserId();
-  //   _isLiked = await isFavoriteImage(userId!, imageUrl);
-  //   setState(() {
-  //     _isLiked = !_isLiked;
-  //     if (_isLiked) {
-  //       // add favorite wallpaper to Firebase: FireStore
-  //       if (userId != null) {
-  //         addUserToFavorites(userId: userId, imageUrl: imageUrl);
-  //       } else {
-  //         print('userId is null');
-  //       }
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(
-  //           content: Text('Added to favorites'),
-  //           duration: Duration(seconds: 1),
-  //           backgroundColor: Colors.green[600],
-  //           elevation: 6,
-  //           shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.circular(10),
-  //           ),
-  //           behavior: SnackBarBehavior.floating,
-  //           action: SnackBarAction(
-  //             label: 'Undo',
-  //             onPressed: () {
-  //               setState(() {
-  //                 _isLiked = !_isLiked;
-  //               });
-  //
-  //             },
-  //           ),
-  //         ),
-  //       );
-  //
-  //     } else {
-  //       // remove/delete favorite wallpaper from Firebase: FireStore
-  //       if (userId != null) {
-  //         deleteDocument(userId: userId, imageUrl: imageUrl);
-  //       } else {
-  //         print('userId is null');
-  //       }
-  //
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(
-  //           content: Text('Removed from favorites'),
-  //           duration: Duration(seconds: 1),
-  //           backgroundColor: Colors.red[600],
-  //           elevation: 6,
-  //           shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.circular(10),
-  //           ),
-  //           behavior: SnackBarBehavior.floating,
-  //           action: SnackBarAction(
-  //             label: 'Undo',
-  //             onPressed: ()  {
-  //               setState(() {
-  //                 _isLiked = !_isLiked;
-  //               });
-  //
-  //             },
-  //           ),
-  //         ),
-  //       );
-  //     }
-  //   });
-  // }
-
   Future<void> _toggleLike() async {
     imageUrl = widget.imgUrl;
     String? userId = await getUserId();
@@ -304,17 +235,52 @@ class _ImageViewState extends State<ImageView> {
     String url = widget.imgUrl;
     int location = WallpaperManager.LOCK_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
     var file = await DefaultCacheManager().getSingleFile(url);
-
-    final bool result = await WallpaperManager.setWallpaperFromFile(file.path, location);
-    print(result);
+    try {
+      final bool result = await WallpaperManager.setWallpaperFromFile(
+          file.path, location);
+      print(result);
+    } catch (e){
+      print('Failed to set wallpaper: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to set wallpaper: $e'),
+          duration: const Duration(seconds: 1),
+          backgroundColor: Colors.red[600],
+          elevation: 6,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+    setState(() {});
   }
 
   Future<void> setWallpaperBoth() async {
     String url = widget.imgUrl;
     int location = WallpaperManager.BOTH_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
     var file = await DefaultCacheManager().getSingleFile(url);
-    final bool result = await WallpaperManager.setWallpaperFromFile(file.path, location);
-    print(result);
+    try {
+      final bool result = await WallpaperManager.setWallpaperFromFile(
+          file.path, location);
+      print(result);
+    } catch(e){
+      print('Failed to set wallpaper: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to set wallpaper: $e'),
+          duration: const Duration(seconds: 1),
+          backgroundColor: Colors.red[600],
+          elevation: 6,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+    setState(() {});
   }
 
   @override
