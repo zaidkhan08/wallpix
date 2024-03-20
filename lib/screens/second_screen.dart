@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class SecondScreen extends StatefulWidget {
   final Uint8List image;
@@ -12,6 +14,7 @@ class SecondScreen extends StatefulWidget {
 }
 
 class _SecondScreenState extends State<SecondScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +37,9 @@ class _SecondScreenState extends State<SecondScreen> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: ElevatedButton(
-                    onPressed: _saveImage,
+                    onPressed: () {
+                        _saveImage(widget.image);
+                    },
                     child: const Text('Save Image'),
                   ),
                 ),
@@ -46,7 +51,24 @@ class _SecondScreenState extends State<SecondScreen> {
     );
   }
 
-  void _saveImage() {
-    // Implement your logic to save the image here
+  Future<void> _saveImage(Uint8List image) async {
+    // Convert Uint8List to XFile
+    //final tempImage = XFile.fromData(image);
+
+    // Request storage permission
+    //await Permission.storage.request();
+
+    // Save image to gallery
+    final imagePath = await ImageGallerySaver.saveImage(
+      image,
+      name: 'image_${DateTime.now().millisecondsSinceEpoch}.jpg',
+    );
+
+    // Show successful message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Image saved to gallery!'),
+      ),
+    );
   }
 }

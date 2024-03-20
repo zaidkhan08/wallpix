@@ -179,7 +179,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => Plans()),
-                        );},
+                        );
+                    },
                   ),
                   ListTile(
                     leading: const Icon(Icons.report),

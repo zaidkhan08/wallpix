@@ -287,7 +287,7 @@ class _ImageViewState extends State<ImageView> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to set wallpaper: $e'),
-          duration: Duration(seconds: 1),
+          duration: const Duration(seconds: 1),
           backgroundColor: Colors.red[600],
           elevation: 6,
           shape: RoundedRectangleBorder(
@@ -304,6 +304,7 @@ class _ImageViewState extends State<ImageView> {
     String url = widget.imgUrl;
     int location = WallpaperManager.LOCK_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
     var file = await DefaultCacheManager().getSingleFile(url);
+
     final bool result = await WallpaperManager.setWallpaperFromFile(file.path, location);
     print(result);
   }
@@ -346,18 +347,18 @@ class _ImageViewState extends State<ImageView> {
                         children: [
                           InteractiveViewer(
                             scaleEnabled: true,
+                            boundaryMargin: const EdgeInsets.all(20),
+                            minScale: 0.1,
+                            maxScale: 4.0,
                             child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
                               child: Image.network(
                                 widget.imgUrl,
                                 fit: BoxFit.cover,
                                 width: MediaQuery.of(context).size.width,
                                 height: MediaQuery.of(context).size.height,
                               ),
-                              borderRadius: BorderRadius.circular(8),
                             ),
-                            boundaryMargin: EdgeInsets.all(20),
-                            minScale: 0.1,
-                            maxScale: 4.0,
                           ),
                           Positioned(
                             top: 20,
@@ -371,17 +372,17 @@ class _ImageViewState extends State<ImageView> {
                                   children: [
                                     Text(
                                       _currentTime,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 48, // Increase font size
                                         fontWeight: FontWeight.bold,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
-                                    SizedBox(height: 4), // Add spacing
+                                    const SizedBox(height: 4), // Add spacing
                                     Text(
                                       _currentDay,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 18, // Day font size
                                         fontWeight: FontWeight.bold,
@@ -452,10 +453,10 @@ class _ImageViewState extends State<ImageView> {
                               );
                               //setWallpaper();
                             },
-                            child: Text('Apply'),
+                            child: const Text('Apply'),
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         GestureDetector(
                           onTap: mounted ? _toggleLike : null,
                           child: AnimatedSwitcher(
