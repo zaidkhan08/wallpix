@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:walllhang/api/rest.dart';
+import 'package:walllhang/plans.dart';
 import 'package:walllhang/utils/userRepo.dart';
 
 void main() => runApp(const AIApp());
@@ -66,12 +67,10 @@ class _MyHomePageState extends State<MyHomePage> {
       } else {
         print('User not found');
       }
-
     } else {
       print('User is not signed in or email is not verified');
     }
   }
-
 
   // Image Generation through stability diffusion
   void generateImage() async {
@@ -136,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-      return SafeArea(
+    return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
         body: Center(
@@ -174,10 +173,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             ? const SizedBox(
                             height: 15,
                             width: 70,
-                            child: CircularProgressIndicator(
-                                color: Colors.black))
-                            : const Text('Generate Image',
-                            style: TextStyle(color: Colors.black)),
+                            child: CircularProgressIndicator(color: Colors.black))
+                            : const Text('Generate Image', style: TextStyle(color: Colors.black)),
                       ),
                     ),
                     const SizedBox(
@@ -189,27 +186,45 @@ class _MyHomePageState extends State<MyHomePage> {
               Positioned(
                 top: 20.0,
                 right: 20.0,
-                child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox(width: 5.0),
-                      Text(
-                        '$coins',
-                        style: const TextStyle(
-                            fontSize: 16.0, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(width: 5.0),
-                      const Icon(
-                        Icons.control_point,
-                        color: Colors.green,
-                      ),
-                    ],
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Plans()),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(width: 5.0),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Plans()),
+                            );
+                          },
+                          child: Text(
+                            '$coins',
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5.0),
+                        const Icon(
+                          Icons.control_point,
+                          color: Colors.green,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 class Gmail extends StatelessWidget {
   const Gmail({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class Gmail extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Welcome to Gmail!',
+              'Welcome to wallpix!',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -20,7 +21,7 @@ class Gmail extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              'You can add your text here.',
+              'THANKS FOR CONTACTING US.',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey,
@@ -29,7 +30,7 @@ class Gmail extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: () {
-                _launchGmail();
+                _launchGmail(context);
               },
               icon: Image.asset(
                 'lib/images/google.png', // Provide your Gmail logo image path here
@@ -47,17 +48,17 @@ class Gmail extends StatelessWidget {
     );
   }
 
-  void _launchGmail() async {
-    final Uri _emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: 'idhackkaregabhadk@gmail.com', // Replace with your Gmail address
+  void _launchGmail(BuildContext context) async {
+    final Email email = Email(
+      recipients: ['fenildabhi612000@gmail.com'], // Replace with your Gmail address
     );
 
-    String url = _emailLaunchUri.toString();
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch Gmail';
+    try {
+      await FlutterEmailSender.send(email);
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Failed to open email client.'),
+      ));
     }
   }
 }

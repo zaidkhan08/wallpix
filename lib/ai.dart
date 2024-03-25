@@ -44,9 +44,6 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('AI Image Generator'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

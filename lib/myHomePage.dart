@@ -174,13 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       'Report',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Plans()),
-                        );
-                    },
+
                   ),
 
                 ],

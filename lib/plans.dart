@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 class Plans extends StatelessWidget {
@@ -10,29 +11,37 @@ class Plans extends StatelessWidget {
         title: Text('Subscription Plans'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SubscriptionCard(
-              title: '₹299',
-              price: '1000 wallcoins',
-              description: 'Generate your unique ideas more efficiently.',
-              buttonText: 'BUY NOW',
-              onPressed: () {
-                // Action when the button is pressed
-              },
-            ),
-            SizedBox(height: 30),
-            SubscriptionCard(
-              title: '₹499',
-              price: '1500 wallcoins',
-              description: '',
-              buttonText: 'BUY NOW',
-              onPressed: () {
-                // Action when the button is pressed
-              },
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 300, // Adjusted width of the card
+                child: SubscriptionCard(
+                  title: '₹299',
+                  price: '1000 pixcoins',
+                  description: 'Generate your unique ideas more efficiently.',
+                  buttonText: 'BUY NOW',
+                  onPressed: () {
+                    // Action when the button is pressed
+                  },
+                ),
+              ),
+              SizedBox(height: 30),
+              SizedBox(
+                width: 300, // Adjusted width of the card
+                child: SubscriptionCard(
+                  title: '₹499',
+                  price: '1500 pixcoins',
+                  description: '',
+                  buttonText: 'BUY NOW',
+                  onPressed: () {
+                    // Action when the button is pressed
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -61,96 +70,132 @@ class SubscriptionCard extends StatefulWidget {
 class _SubscriptionCardState extends State<SubscriptionCard>
     with TickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<Color?> _colorAnimation;
+  late Animation<double> _animation;
+  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(seconds: 2),
     )..repeat(reverse: true);
 
-    _colorAnimation = ColorTween(
-      begin: Colors.black,
-      end: Colors.red.withOpacity(0.5),
-    ).animate(_controller);
+    _animation = Tween<double>(
+      begin: -0.05,
+      end: 0.05,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+
+    // Start the timer to stop the animation after 7 seconds
+    _timer = Timer(Duration(seconds: 5), () {
+      _controller.stop();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 20),
-      elevation: 4.0,
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) {
-          return Container(
-            padding: EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: Offset(0, 3), // changes position of shadow
+    return SizedBox(
+      height: 320, // Adjusted height to accommodate content
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Positioned(
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                return Transform.rotate(
+                  angle: _animation.value,
+                  child: child,
+                );
+              },
+              child: Container(
+                width: 300, // Adjusted width of the card
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  widget.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24.0,
-                  ),
-                ),
-                SizedBox(height: 10.0),
-                Text(
-                  widget.price,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(height: 10.0),
-                Text(
-                  widget.description,
-                  style: TextStyle(
-                    fontSize: 14.0,
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: widget.onPressed,
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 60,
+                      width: 60,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 25,
+                        child: Icon(
+                          Icons.star,
+                          size: 30,
+                          color: Colors.blue,
+                        ),
                       ),
                     ),
-                    padding: MaterialStateProperty.all(
-                      EdgeInsets.symmetric(vertical: 12.0),
+                    SizedBox(height: 10.0),
+                    Text(
+                      widget.title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0,
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    widget.buttonText,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
+                    SizedBox(height: 10.0),
+                    Text(
+                      widget.price,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                      ),
                     ),
-                  ),
+                    SizedBox(height: 10.0),
+                    Text(
+                      widget.description,
+                      style: TextStyle(
+                        fontSize: 14.0,
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    SizedBox(
+                      width: 200, // Adjusted width of the button
+                      child: ElevatedButton(
+                        onPressed: widget.onPressed,
+                        style: ButtonStyle(
+                          backgroundColor:
+                          MaterialStateProperty.all(Colors.blue),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          padding: MaterialStateProperty.all(
+                            EdgeInsets.symmetric(vertical: 12.0),
+                          ),
+                        ),
+                        child: Text(
+                          widget.buttonText,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
@@ -158,12 +203,13 @@ class _SubscriptionCardState extends State<SubscriptionCard>
   @override
   void dispose() {
     _controller.dispose();
+    _timer.cancel(); // Cancel the timer
     super.dispose();
   }
 }
 
 void main() {
   runApp(MaterialApp(
-    home: Plans(),
+
   ));
 }
