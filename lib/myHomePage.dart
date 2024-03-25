@@ -182,16 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         );
                     },
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.report),
-                    title: const Text(
-                      'Report',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+
                 ],
               ),
             ),

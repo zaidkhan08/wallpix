@@ -164,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 30,
                     ),
                     SizedBox(
-                      width: 150,
+                      width: 200,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0XFF9DB2BF),
@@ -173,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: isGenerating
                             ? const SizedBox(
                             height: 15,
-                            width: 15,
+                            width: 70,
                             child: CircularProgressIndicator(
                                 color: Colors.black))
                             : const Text('Generate Image',

@@ -394,7 +394,6 @@ class _ImageViewState extends State<ImageView> {
                                         onPressed: () async {
                                           // Handle the "Set as Home Screen" option.
                                           await setWallpaperHome();
-                                          Navigator.pop(context);
                                         },
                                       ),
                                       SimpleDialogOption(
@@ -402,7 +401,6 @@ class _ImageViewState extends State<ImageView> {
                                         onPressed: () {
                                           // Handle the "Set as Lock screen" option.
                                           setWallpaperLock();
-                                          Navigator.pop(context);
                                         },
                                       ),
                                       SimpleDialogOption(
@@ -410,7 +408,6 @@ class _ImageViewState extends State<ImageView> {
                                         onPressed: () {
                                           // Handle the "Set both" option.
                                           setWallpaperBoth();
-                                          Navigator.pop(context);
                                         },
                                       ),
                                     ],

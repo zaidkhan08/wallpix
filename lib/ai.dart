@@ -10,7 +10,7 @@ class AiImageGenerator extends StatefulWidget {
 class _AiImageGeneratorState extends State<AiImageGenerator> {
   TextEditingController _textInputController = TextEditingController();
   String _imageUrl = '';
-  String apiKey = 'sk-dXhKviD7EpZuXf1QNEDEiWhNwZzaWrdJ4mjkUrmgif1zOA3V'; // Replace with your Stability.AI API key
+  String apiKey = 'sk-9YxWlDdDOlaQiug35oq69B70DN6QGNDyd0Wc00JROykOp3sK'; // Replace with your Stability.AI API key
 
   Future<void> _generateImage() async {
     final text = _textInputController.text;
