@@ -12,45 +12,23 @@ import 'package:walllhang/screens/favoriteImagesView.dart';
 import 'searchbar.dart';
 import 'imggen.dart';
 
-
-
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title});
 
   final String title;
-
-  void signUserOut() {
-    FirebaseAuth.instance.signOut();
-  }
-
-
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final pages = [AllImages(), Home(), AIApp()];
-  final pageController = PageController(initialPage: 0);
-  int currentSelected = 0;
+  final List<Widget> pages = [AllImages(), Home(), AIApp()];
+  final PageController pageController = PageController(initialPage: 0);
+  int currentIndex = 0;
   bool _isDrawerOpen = false;
   bool _isSearchOpen = false;
   final user = FirebaseAuth.instance.currentUser!;
-  @override
-  void initState() {
-    super.initState();
-    pageController.addListener(() {
-      int currentIndex = pageController.page?.round() ?? 0;
-      if (currentIndex != currentSelected) {
-        setState(() {
-          currentSelected = currentIndex;
-        });
-      }
-    });
-  }
 
-  // sign out using Firebase
   void signUserOut() {
     GoogleSignIn().signOut();
     FirebaseAuth.instance.signOut();
@@ -71,7 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Stack(
               children: [
-
                 UserAccountsDrawerHeader(
                   accountName: Padding(
                     padding: const EdgeInsets.only(top: 20.0),
@@ -80,11 +57,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 24
+                        fontSize: 24,
                       ),
                     ),
                   ),
-                  accountEmail: Text( user.email! ),
+                  accountEmail: Text(user.email!),
                   currentAccountPicture: const CircleAvatar(
                     backgroundColor: Colors.white,
                     child: Icon(
@@ -119,7 +96,6 @@ class _MyHomePageState extends State<MyHomePage> {
               child: ListView(
                 shrinkWrap: true,
                 children: [
-
                   ListTile(
                     leading: Icon(Icons.logout),
                     title: const Text(
@@ -154,7 +130,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.pop(context);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => favoriteImagesView()),
+                        MaterialPageRoute(
+                            builder: (context) => favoriteImagesView()),
                       );
                     },
                   ),
@@ -174,9 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       'Report',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-
                   ),
-
                 ],
               ),
             ),
@@ -214,98 +189,76 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: currentSelected != 2
-            ? AnimatedCrossFade(
-              firstChild: const Text(
-                'Wallpix',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  wordSpacing: 10,
-                  height: 2,
-                ),
-              ),
-              secondChild: Container(
-                width: 200,
-                child: TextField(
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    hintText: 'Search...',
-                    hintStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                  ),
-                ),
-              ),
-          crossFadeState: _isSearchOpen
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
-          duration: Duration(milliseconds: 300),
-        )
-            : null,
-        backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color: Colors.white),
-        actions: [
-          IconButton(
-            icon: Icon(_isSearchOpen ? Icons.close : Icons.search_outlined),
-            onPressed: _isSearchOpen ? _toggleSearch : _navigateToSearchPage,
-          ),
-          IconButton(
-            icon: Icon(_isDrawerOpen ? Icons.close : Icons.menu),
-            onPressed: _openDrawer,
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: PageView.builder(
-              controller: pageController,
-              onPageChanged: (int index) {
-                setState(() {
-                  currentSelected = index;
-                });
-              },
-              itemCount: pages.length,
-              itemBuilder: (BuildContext context, int index) {
-                return pages[index];
-              },
-              physics: NeverScrollableScrollPhysics(),
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: CurvedNavigationBar(
-              height: 59,
-              backgroundColor: Colors.transparent,
-              color: Colors.black54,
-              items: [
-                Icon(Icons.home, size: 30, color: Colors.white),
-                Icon(Icons.category_outlined, size: 30, color: Colors.white),
-                Icon(Icons.memory, size: 30, color: Colors.white),
-              ],
-              onTap: (int index) {
-                setState(() {
-                  currentSelected = index;
-                  pageController.jumpToPage(currentSelected);
-                });
-              },
-            ),
-          ),
-        ],
-      ),
+        backgroundColor: Colors.black,
+        appBar: AppBar(
+        title: currentIndex != 2
+        ? AnimatedCrossFade(
+        firstChild: const Text(
+        'Wallpix',
+        style: TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        wordSpacing: 10,
+        height: 2,
+    ),
+    ),
+    secondChild: Container(
+    width: 200,
+    child: TextField(
+    style: TextStyle(color: Colors.white),
+    decoration: InputDecoration(
+    hintText: 'Search...',
+    hintStyle: TextStyle(color: Colors.grey),
+    border: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(20),
+    borderSide: BorderSide(
+    color: Colors.white,
+    ),
+    ),
+    filled: true,
+    fillColor: Colors.white,
+    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+    ),
+    ),
+    ),
+    crossFadeState: _isSearchOpen
+    ? CrossFadeState.showSecond
+        : CrossFadeState.showFirst,
+    duration: Duration(milliseconds: 300),
+    )
+        : null,
+    backgroundColor: Colors.transparent,
+    iconTheme: IconThemeData(color: Colors.white),
+    actions: [
+    IconButton(
+    icon: Icon(_isSearchOpen ? Icons.close : Icons.search_outlined),
+    onPressed: _isSearchOpen ? _toggleSearch : _navigateToSearchPage,
+    ),
+    IconButton(
+    icon: Icon(_isDrawerOpen ? Icons.close : Icons.menu),
+    onPressed: _openDrawer,
+    ),
+    ],
+    ),
+    body: IndexedStack(
+    index: currentIndex,
+    children: pages,
+    ),
+    bottomNavigationBar: CurvedNavigationBar(
+    height: 59,
+    backgroundColor: Colors.transparent,
+    color: Colors.black54,
+    items: [
+    Icon(Icons.home, size: 30, color: Colors.white),
+    Icon(Icons.category_outlined, size: 30, color: Colors.white),
+    Icon(Icons.memory, size: 30, color: Colors.white),
+    ],
+      onTap: (int index) {
+        setState(() {
+          currentIndex = index;
+        });
+      },
+    ),
     );
   }
 }
-

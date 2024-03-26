@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:walllhang/screens/auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -17,14 +19,50 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'wallpix',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+      debugShowCheckedModeBanner: false,
+      title: 'wallpix',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: SplashScreen(),
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Simulate a delay for splash screen (replace with your actual loading process)
+    Future.delayed(const Duration(seconds: 2), () {
+      // After the delay, navigate to the authentication page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const AuthPage()),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white, // Set background color to white
+      body: Center(
+        child: Image.asset(
+          'lib/images/start.gif',
+          fit: BoxFit.contain, // Adjust to fit within the screen bounds
+          width: MediaQuery.of(context).size.width * 30, // Adjust width as needed
+          height: MediaQuery.of(context).size.height * 30, // Adjust height as needed
         ),
-        home: const AuthPage()
-      //MyHomePage(title: 'The Wallpapers App!'),
+      ),
     );
   }
 }
