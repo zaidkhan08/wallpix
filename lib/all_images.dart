@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:walllhang/imageView.dart';
 import 'package:walllhang/categoryImageView.dart';
@@ -264,6 +266,14 @@ class _AllImagesState extends State<AllImages> {
     }
   }
 
+  static final customCacheManager = CacheManager(
+    Config(
+      'customCacheKey',
+      stalePeriod: const Duration(days: 3),
+      maxNrOfCacheObjects: 100,
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -366,7 +376,7 @@ class _AllImagesState extends State<AllImages> {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                          ),
+                          )
                         );
                       },
                     ),

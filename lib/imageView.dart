@@ -423,7 +423,7 @@ class _ImageViewState extends State<ImageView> {
                         GestureDetector(
                           onTap: mounted ? _toggleLike : null,
                           child: AnimatedSwitcher(
-                            duration: Duration(milliseconds: 300),
+                            duration: const Duration(milliseconds: 300),
                             transitionBuilder: (Widget child, Animation<double> animation) {
                               return ScaleTransition(scale: animation, child: child);
                             },
