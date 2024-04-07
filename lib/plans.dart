@@ -8,6 +8,8 @@ import 'package:walllhang/utils/userRepo.dart';
 import 'Widgets/subscriptionCard.dart';
 import 'package:http/http.dart' as http;
 
+import 'myHomePage.dart';
+
 class Plans extends StatefulWidget {
   const Plans({Key? key});
 
@@ -23,7 +25,14 @@ class _PlansState extends State<Plans> {
 
   void initState() {
     super.initState();
-    //userId = getUserId();
+    _initializeUserId();
+  }
+
+  Future<void> _initializeUserId() async {
+    String? uId = await getUserId();
+    setState(() {
+      userId = uId!;
+    }); // Rebuild the widget after getting userId
   }
 
   Future<String?> getUserId() async {
@@ -52,7 +61,7 @@ class _PlansState extends State<Plans> {
                 width: 300, // Adjusted width of the card
                 child: SubscriptionCard(
                   title: '₹299',
-                  price: '1000 pixCoins',
+                  price: '500 pixCoins',
                   description: 'Generate your unique ideas more efficiently.',
                   buttonText: 'BUY NOW',
                   onPressed: () async {
@@ -60,20 +69,41 @@ class _PlansState extends State<Plans> {
                     await initPaymentSheet("299", "inr");
                     try {
                       await Stripe.instance.presentPaymentSheet();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Payment Successful",
-                            style: TextStyle(color: Colors.white)),
-                        backgroundColor: Colors.green,
-                      ));
-                      _userRepo.addCoins(userId, 1000);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Payment Successful',
+                              style: TextStyle(color: Colors.white)),
+                          duration: const Duration(seconds: 1),
+                          backgroundColor: Colors.green[600],
+                          elevation: 6,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                      try {
+                        _userRepo.addCoins(userId, 500);
+                        print("1000 Coins added!");
+                        Navigator.pop(context);
+                      } catch (e) {
+                        print("Coins not added! $e");
+                      }
                     } catch (e) {
                       print("Payment Sheet Failed");
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Payment Failed",
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Payment Failed',
                             style: TextStyle(color: Colors.white)),
-                        backgroundColor: Colors.redAccent,
-                      ));
-                      _userRepo.addCoins(userId, 1000);
+                          duration: const Duration(seconds: 1),
+                          backgroundColor: Colors.red[600],
+                          elevation: 6,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
                     }
                   },
                 ),
@@ -86,8 +116,47 @@ class _PlansState extends State<Plans> {
                   price: '1500 pixCoins',
                   description: 'Generate your unique ideas more efficiently.',
                   buttonText: 'BUY NOW',
-                  onPressed: () {
+                  onPressed: () async {
                     // Action when the button is pressed
+                    await initPaymentSheet("499", "inr");
+                    try {
+                      await Stripe.instance.presentPaymentSheet();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Payment Successful',
+                              style: TextStyle(color: Colors.white)),
+                          duration: const Duration(seconds: 1),
+                          backgroundColor: Colors.green[600],
+                          elevation: 6,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                      try {
+                        _userRepo.addCoins(userId, 1500);
+                        print("1500 Coins added!");
+                        Navigator.pop(context);
+                      } catch (e) {
+                        print("Coins not added! $e");
+                      }
+                    } catch (e) {
+                      print("Payment Sheet Failed");
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Payment Failed',
+                              style: TextStyle(color: Colors.white)),
+                          duration: const Duration(seconds: 1),
+                          backgroundColor: Colors.red[600],
+                          elevation: 6,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    }
                   },
                 ),
               ),
@@ -145,20 +214,21 @@ class _PlansState extends State<Plans> {
   createPaymentIntent(String amount, String currency) async {
     try {
       final url = Uri.parse('https://api.stripe.com/v1/payment_intents');
-      final secretKey = 'sk_test_51P0iXPSBCE40NrRgVyVye1AP64VyNB1eID9WcVhC7CWn4Dud30LoZCpje0svQLd76mvgJeiLI5OZ2cDbz7HCcjcx0006BteSxc';
+      final secretKey =
+          'sk_test_51P0iXPSBCE40NrRgVyVye1AP64VyNB1eID9WcVhC7CWn4Dud30LoZCpje0svQLd76mvgJeiLI5OZ2cDbz7HCcjcx0006BteSxc';
       // dotenv.env['STRIPE_SECRET_KEY']!;
       Map<String, dynamic> body = {
         'amount': calculateAmount(amount),
         'currency': currency.toLowerCase(),
         //'automatic_payment_methods[enabled]': 'true',
         'payment_method_types[]': 'card',
-        // 'description': "Buy PixCoins",
-        // 'shipping[name]': 'Zack',
-        // 'shipping[address][line1]': '510 Townsend St',
-        // 'shipping[address][postal_code]': '90089',
-        // 'shipping[address][city]': 'Los Angeles',
-        // 'shipping[address][state]': 'CA',
-        // 'shipping[address][country]': 'US',
+        'description': "Buy PixCoins",
+        'shipping[name]': 'Zack',
+        'shipping[address][line1]': '510 Townsend St',
+        'shipping[address][postal_code]': '90089',
+        'shipping[address][city]': 'Los Angeles',
+        'shipping[address][state]': 'CA',
+        'shipping[address][country]': 'US',
       };
 
       final response = await http.post(url,
@@ -166,8 +236,7 @@ class _PlansState extends State<Plans> {
             'Authorization': 'Bearer $secretKey',
             'Content-Type': 'application/x-www-form-urlencoded'
           },
-          body: body
-      );
+          body: body);
 
       if (response.statusCode == 200) {
         var json = jsonDecode(response.body.toString());
@@ -177,7 +246,7 @@ class _PlansState extends State<Plans> {
         print('Error in calling Payment Intent');
       }
     } catch (e) {
-      print("Error: $e" );
+      print("Error: $e");
     }
   }
 
