@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:walllhang/screens/auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -10,6 +12,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  //await dotenv.load(fileName: ".env");
+  Stripe.publishableKey = 'pk_test_51P0iXPSBCE40NrRgJ3N8qfhhBmGKfz8EdWkJla2S7zG3rf0Yfo7rXbeQ4NSGdzvlqIt97vnN3FZvaRbDBIHdI9BZ00aPmckDOg';
+  //dotenv.env["STRIPE_PUBLISH_KEY"]!;
+  await Stripe.instance.applySettings();
   runApp(const MyApp());
 }
 

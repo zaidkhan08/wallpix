@@ -14,7 +14,6 @@ class SecondScreen extends StatefulWidget {
 }
 
 class _SecondScreenState extends State<SecondScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +37,7 @@ class _SecondScreenState extends State<SecondScreen> {
                   padding: const EdgeInsets.all(20.0),
                   child: ElevatedButton(
                     onPressed: () {
-                        _saveImage(widget.image);
+                      _saveImage(widget.image);
                     },
                     child: const Text('Save Image'),
                   ),
@@ -67,7 +66,14 @@ class _SecondScreenState extends State<SecondScreen> {
     // Show successful message
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Image saved to gallery!'),
+        content: Text('Image Saved to Gallery'),
+        duration: Duration(seconds: 1),
+        backgroundColor: Colors.green[600],
+        elevation: 6,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        behavior: SnackBarBehavior.floating,
       ),
     );
   }

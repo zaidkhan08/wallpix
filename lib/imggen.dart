@@ -12,9 +12,9 @@ class AIApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-    home: MyHomePage(),
-    debugShowCheckedModeBanner: false,
-  );
+        home: MyHomePage(),
+        debugShowCheckedModeBanner: false,
+      );
 }
 
 class MyHomePage extends StatefulWidget {
@@ -74,6 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // Image Generation through stability diffusion
   void generateImage() async {
+    var initialCoins = coins;
     // Subtract 50 coins if there are enough coins
     if (coins >= 50) {
       setState(() {
@@ -94,7 +95,8 @@ class _MyHomePageState extends State<MyHomePage> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text("Failed to Generate Image"),
-              content: const Text("An error occurred while generating the image."),
+              content:
+                  const Text("An error occurred while generating the image."),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -106,6 +108,12 @@ class _MyHomePageState extends State<MyHomePage> {
             );
           },
         );
+
+        // If the coins have been deducted, add them back to avoid losing coins
+        if (coins < initialCoins) {
+          await _userRepo.addCoins(userId, 50);
+          _loadUserCoins();
+        }
       } finally {
         setState(() {
           isGenerating = false;
@@ -171,10 +179,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPressed: generateImage,
                         child: isGenerating
                             ? const SizedBox(
-                            height: 15,
-                            width: 70,
-                            child: CircularProgressIndicator(color: Colors.black))
-                            : const Text('Generate Image', style: TextStyle(color: Colors.black)),
+                                height: 15,
+                                width: 70,
+                                child: CircularProgressIndicator(
+                                    color: Colors.black))
+                            : const Text('Generate Image',
+                                style: TextStyle(color: Colors.black)),
                       ),
                     ),
                     const SizedBox(
@@ -190,9 +200,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const Plans()
-                      ),
+                      MaterialPageRoute(builder: (context) => const Plans()),
                     );
                   },
                   child: Container(
@@ -210,8 +218,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const Plans()
-                              ),
+                                  builder: (context) => const Plans()),
                             );
                           },
                           child: Text(

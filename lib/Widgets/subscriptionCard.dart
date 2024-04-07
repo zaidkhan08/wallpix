@@ -87,6 +87,7 @@ class _SubscriptionCardState extends State<SubscriptionCard>
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(
                       height: 60,

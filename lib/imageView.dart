@@ -11,7 +11,8 @@ class ImageView extends StatefulWidget {
   final String imgUrl;
   final String imgName;
 
-  const ImageView({Key? key, required this.imgUrl, required this.imgName}) : super(key: key);
+  const ImageView({Key? key, required this.imgUrl, required this.imgName})
+      : super(key: key);
 
   @override
   _ImageViewState createState() => _ImageViewState();
@@ -59,9 +60,11 @@ class _ImageViewState extends State<ImageView> {
 
   Future<List<String>> fetchImagesFromAPI() async {
     // Fetch images from Unsplash API
-    final response = await http.get(Uri.parse('https://api.unsplash.com/photos/random?count=6'), headers: {
-      'Authorization': '5P052_ckCJv-rt9Sfb71Y_U6KqhEVG6JZufL8338wk4',
-    });
+    final response = await http.get(
+        Uri.parse('https://api.unsplash.com/photos/random?count=6'),
+        headers: {
+          'Authorization': '5P052_ckCJv-rt9Sfb71Y_U6KqhEVG6JZufL8338wk4',
+        });
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
@@ -77,10 +80,12 @@ class _ImageViewState extends State<ImageView> {
     }
   }
 
-  CollectionReference favorites = FirebaseFirestore.instance.collection('favorites');
+  CollectionReference favorites =
+      FirebaseFirestore.instance.collection('favorites');
 
   // remove/delete favorite wallpaper from Firebase: FireStore
-  Future<void> deleteDocument({required String userId, required String imageUrl}) async {
+  Future<void> deleteDocument(
+      {required String userId, required String imageUrl}) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('favorites')
         .where('userId', isEqualTo: userId)
@@ -112,7 +117,8 @@ class _ImageViewState extends State<ImageView> {
   }
 
   // add favorite wallpaper to Firebase: FireStore
-  Future<void> addUserToFavorites({required String userId, required String imageUrl}) async {
+  Future<void> addUserToFavorites(
+      {required String userId, required String imageUrl}) async {
     try {
       await favorites.add({'userId': userId, 'imgUrl': imageUrl});
       print('User is added to the Collection');
@@ -187,12 +193,12 @@ class _ImageViewState extends State<ImageView> {
     }
   }
 
-
   void _updateTime() {
     setState(() {
       _currentTime = DateFormat('hh:mm a').format(DateTime.now());
     });
-    Future.delayed(Duration(minutes: 1) - Duration(seconds: DateTime.now().second), () {
+    Future.delayed(
+        Duration(minutes: 1) - Duration(seconds: DateTime.now().second), () {
       _updateTime();
     });
   }
@@ -208,10 +214,12 @@ class _ImageViewState extends State<ImageView> {
 
   Future<void> setWallpaperHome() async {
     String url = widget.imgUrl;
-    int location = WallpaperManager.HOME_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
+    int location = WallpaperManager
+        .HOME_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
     var file = await DefaultCacheManager().getSingleFile(url);
     try {
-      final bool result = await WallpaperManager.setWallpaperFromFile(file.path, location);
+      final bool result =
+          await WallpaperManager.setWallpaperFromFile(file.path, location);
       print(result);
     } catch (e) {
       print('Failed to set wallpaper: $e');
@@ -233,13 +241,14 @@ class _ImageViewState extends State<ImageView> {
 
   Future<void> setWallpaperLock() async {
     String url = widget.imgUrl;
-    int location = WallpaperManager.LOCK_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
+    int location = WallpaperManager
+        .LOCK_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
     var file = await DefaultCacheManager().getSingleFile(url);
     try {
-      final bool result = await WallpaperManager.setWallpaperFromFile(
-          file.path, location);
+      final bool result =
+          await WallpaperManager.setWallpaperFromFile(file.path, location);
       print(result);
-    } catch (e){
+    } catch (e) {
       print('Failed to set wallpaper: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -259,13 +268,14 @@ class _ImageViewState extends State<ImageView> {
 
   Future<void> setWallpaperBoth() async {
     String url = widget.imgUrl;
-    int location = WallpaperManager.BOTH_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
+    int location = WallpaperManager
+        .BOTH_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
     var file = await DefaultCacheManager().getSingleFile(url);
     try {
-      final bool result = await WallpaperManager.setWallpaperFromFile(
-          file.path, location);
+      final bool result =
+          await WallpaperManager.setWallpaperFromFile(file.path, location);
       print(result);
-    } catch(e){
+    } catch (e) {
       print('Failed to set wallpaper: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -285,7 +295,6 @@ class _ImageViewState extends State<ImageView> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.black,
       body: GestureDetector(
@@ -333,7 +342,8 @@ class _ImageViewState extends State<ImageView> {
                             child: Visibility(
                               visible: !_isHoldingImage,
                               child: Padding(
-                                padding: const EdgeInsets.only(top: 87), // Add padding
+                                padding: const EdgeInsets.only(top: 87),
+                                // Add padding
                                 child: Column(
                                   children: [
                                     Text(
@@ -424,8 +434,10 @@ class _ImageViewState extends State<ImageView> {
                           onTap: mounted ? _toggleLike : null,
                           child: AnimatedSwitcher(
                             duration: const Duration(milliseconds: 300),
-                            transitionBuilder: (Widget child, Animation<double> animation) {
-                              return ScaleTransition(scale: animation, child: child);
+                            transitionBuilder:
+                                (Widget child, Animation<double> animation) {
+                              return ScaleTransition(
+                                  scale: animation, child: child);
                             },
                             child: Icon(
                               _isLiked ? Icons.favorite : Icons.favorite_border,
