@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class button_tile extends StatelessWidget {
   final String imagePath;
+  final String text;
   final Function() onTap;
 
   const button_tile({
     super.key,
     required this.imagePath,
+    required this.text,
     required this.onTap
   });
 
@@ -16,16 +18,26 @@ class button_tile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(20),
+        width: MediaQuery.of(context).size.width * 0.85,
+        padding: const EdgeInsets.all(15),
+        margin: const EdgeInsets.symmetric(vertical: 25),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.white),
           borderRadius: BorderRadius.circular(15),
           color: Colors.grey[200],
         ),
-        child: Image.asset(
-          imagePath,
-          height: 40,
-
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                imagePath,
+                height: 20,
+              ),
+              const SizedBox(width: 20,),
+              Text(text,  style: TextStyle(color: Colors.grey[700]),)
+            ],
+          ),
         ),
       ),
     );

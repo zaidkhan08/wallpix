@@ -25,14 +25,14 @@ class _PlansState extends State<Plans> {
 
   void initState() {
     super.initState();
-    _initializeUserId();
-  }
 
-  Future<void> _initializeUserId() async {
-    String? uId = await getUserId();
-    setState(() {
-      userId = uId!;
-    }); // Rebuild the widget after getting userId
+    getUserId().then((value) {
+      if (value != null) {
+        setState(() {
+          userId = value;
+        });
+      }
+    });
   }
 
   Future<String?> getUserId() async {

@@ -213,16 +213,17 @@ class _loginPageState extends State<loginPage> {
                     // google sign in
                     button_tile(
                         imagePath: 'lib/images/google.png',
+                      text: 'login with Google',
                       onTap: () =>  AuthService().signInWithGoogle(),
                     ),
 
-                    SizedBox(width: 25,),
+                    // const SizedBox(width: 25,),
 
                     // facebook sign in
-                    button_tile(
-                        imagePath: 'lib/images/facebook2.png',
-                      onTap:(){},
-                    )
+                    // button_tile(
+                    //     imagePath: 'lib/images/facebook2.png',
+                    //   onTap:(){},
+                    // )
                   ],
                 ),
 

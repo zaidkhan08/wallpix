@@ -31,11 +31,9 @@ class _favoriteImagesViewState extends State<favoriteImagesView> {
   // get user ID of the user
   Future<String?> getUserId() async {
     User? user = _auth.currentUser;
-
     if (user != null) {
       return user.uid;
     } else {
-      print('No user is currently signed in');
       return null;
     }
   }
@@ -53,12 +51,6 @@ class _favoriteImagesViewState extends State<favoriteImagesView> {
       backgroundColor: Colors.black,
       body: Column(
         children: [
-          // ListView.builder(
-          // itemCount: data.size,
-          //   itemBuilder: (context, index){
-          //     return Text("ImgUrl: ${data.docs[index]['imgUrl']}");
-          //   },
-          // ),
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 20),
@@ -68,11 +60,11 @@ class _favoriteImagesViewState extends State<favoriteImagesView> {
                   AsyncSnapshot<QuerySnapshot> snapshot
                 ) {
                   if (snapshot.hasError){
-                    return const Text("Something went Wrong!");
+                    return const Center(child: Text("Something went Wrong!", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)));
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting){
-                    return const CircularProgressIndicator();
+                    return const Center(child: CircularProgressIndicator());
                   }
 
                   if (snapshot.data!.size == 0) {
