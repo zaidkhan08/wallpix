@@ -14,19 +14,19 @@ class AIApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-        home: MyHomePage(),
+        home: AiPage(),
         debugShowCheckedModeBanner: false,
       );
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class AiPage extends StatefulWidget {
+  const AiPage({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _AiPageState createState() => _AiPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _AiPageState extends State<AiPage> {
   final textController = TextEditingController();
   final _userRepo = UserRepo(FirebaseFirestore.instance);
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -86,16 +86,42 @@ class _MyHomePageState extends State<MyHomePage> {
 
       try {
         // Attempt image generation
-        await convertTextToImage(textController.text, context);
+        bool success = await convertTextToImage(textController.text, context);
 
-        // Deduct coins after the generation is successful
-        await _userRepo.deductCoins(userId, 50);
-        _loadUserCoins();
+        if (success) {
+          // Deduct coins after successful image generation
+          await _userRepo.deductCoins(userId, 50);
+          _loadUserCoins();
+        } else {
+          // Show an error dialog if image generation fails
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Failed to Generate Image"),
+                content: const Text(
+                    "An error occurred while generating the image."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("OK"),
+                  ),
+                ],
+              );
+            },
+          );
+
+          // Add coins back to the user's account if image generation fails
+          await _userRepo.addCoins(userId, 50);
+          _loadUserCoins();
+        }
       } catch (e) {
-        // If image generation fails, show an error dialog
         showDialog(
           context: context,
           builder: (BuildContext context) {
+
             return AlertDialog(
               title: const Text("Failed to Generate Image"),
               content:
@@ -112,10 +138,10 @@ class _MyHomePageState extends State<MyHomePage> {
           },
         );
 
+
         // If the coins have been deducted, add them back to avoid losing coins
         if (coins < initialCoins) {
-          await _userRepo.addCoins(userId, 50);
-          _loadUserCoins();
+          print("$coins < $initialCoins");
         }
       } finally {
         setState(() {
@@ -146,10 +172,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Center(
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: Center(
           child: Stack(
             children: [
               Padding(
@@ -174,7 +200,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 30,
                     ),
                     SizedBox(
-                      width: 200,
+                      width: 250,
+                      height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0XFF9DB2BF),
@@ -182,10 +209,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPressed: generateImage,
                         child: isGenerating
                             ? const SizedBox(
-                                height: 15,
-                                width: 70,
-                                child: CircularProgressIndicator(
-                                    color: Colors.black))
+                                height: 25,
+                                width: 25,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                      color: Colors.black),
+                                ))
                             : const Text('Generate Image',
                                 style: TextStyle(color: Colors.black)),
                       ),

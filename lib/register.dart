@@ -202,7 +202,7 @@ class _registerPageState extends State<registerPage> {
                     // google sign in
                     button_tile(
                         imagePath: 'lib/images/google.png',
-                      text: 'register with Google',
+                      text: 'Sign Up with Google',
                       onTap: () => AuthService().signInWithGoogle(),
                     ),
 

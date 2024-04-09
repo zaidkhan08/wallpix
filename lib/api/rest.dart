@@ -2,11 +2,9 @@
 
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:walllhang/screens/second_screen.dart';
-import 'package:walllhang/utils/dialog.dart';
 
 Future<dynamic> convertTextToImage(String prompt, BuildContext context) async {
   Uint8List imageData = Uint8List(0);
@@ -69,8 +67,7 @@ Future<dynamic> convertTextToImage(String prompt, BuildContext context) async {
         // Retry the request with the new API key
         return convertTextToImage(prompt, context);
       }
-
-      return showErrorDialog('Failed to generate image', context);
+      return null;
     }
   } catch (e) {
     // Print exception details
@@ -78,6 +75,6 @@ Future<dynamic> convertTextToImage(String prompt, BuildContext context) async {
 
     // If an exception occurs, switch to the next API key and retry
     currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
-    return convertTextToImage(prompt, context);
+    return null;
   }
 }

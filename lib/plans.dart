@@ -2,13 +2,10 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:walllhang/utils/userRepo.dart';
 import 'Widgets/subscriptionCard.dart';
 import 'package:http/http.dart' as http;
-
-import 'myHomePage.dart';
 
 class Plans extends StatefulWidget {
   const Plans({Key? key});
@@ -72,7 +69,7 @@ class _PlansState extends State<Plans> {
                       await Stripe.instance.presentPaymentSheet();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Payment Successful',
+                          content: const Text('Payment Successful',
                               style: TextStyle(color: Colors.white)),
                           duration: const Duration(seconds: 1),
                           backgroundColor: Colors.green[600],
@@ -94,7 +91,7 @@ class _PlansState extends State<Plans> {
                       print("Payment Sheet Failed");
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Payment Failed',
+                          content: const Text('Payment Failed',
                             style: TextStyle(color: Colors.white)),
                           duration: const Duration(seconds: 1),
                           backgroundColor: Colors.red[600],
