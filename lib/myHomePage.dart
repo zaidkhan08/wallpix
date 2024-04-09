@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:walllhang/all_images.dart';
+import 'package:walllhang/apploader.dart';
 import 'package:walllhang/draweritems/contactus.dart';
 import 'package:walllhang/home.dart';
 import 'package:walllhang/login.dart';
@@ -151,6 +152,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       'Report',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => introslider(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

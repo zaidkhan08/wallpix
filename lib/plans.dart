@@ -25,14 +25,14 @@ class _PlansState extends State<Plans> {
 
   void initState() {
     super.initState();
-    _initializeUserId();
-  }
 
-  Future<void> _initializeUserId() async {
-    String? uId = await getUserId();
-    setState(() {
-      userId = uId!;
-    }); // Rebuild the widget after getting userId
+    getUserId().then((value) {
+      if (value != null) {
+        setState(() {
+          userId = value;
+        });
+      }
+    });
   }
 
   Future<String?> getUserId() async {
@@ -85,7 +85,7 @@ class _PlansState extends State<Plans> {
                       );
                       try {
                         _userRepo.addCoins(userId, 500);
-                        print("1000 Coins added!");
+                        print("500 Coins added!");
                         Navigator.pop(context);
                       } catch (e) {
                         print("Coins not added! $e");
@@ -115,7 +115,7 @@ class _PlansState extends State<Plans> {
                 height: 255,
                 child: SubscriptionCard(
                   title: '₹499',
-                  price: '1500 pixCoins',
+                  price: '1000 pixCoins',
                   description: 'Generate your unique ideas more efficiently.',
                   buttonText: 'BUY NOW',
                   onPressed: () async {
@@ -137,8 +137,8 @@ class _PlansState extends State<Plans> {
                         ),
                       );
                       try {
-                        _userRepo.addCoins(userId, 1500);
-                        print("1500 Coins added!");
+                        _userRepo.addCoins(userId, 1000);
+                        print("1000 Coins added!");
                         Navigator.pop(context);
                       } catch (e) {
                         print("Coins not added! $e");

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:walllhang/imageView.dart';
 
@@ -121,40 +122,42 @@ class _catImageViewState extends State<catImageView> {
               const SizedBox(height: 20,),
           
               // category wise searched images
-              Container(
-                height: MediaQuery.of(context).size.height,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 12.0,
-                    mainAxisSpacing: 12.0,
-                    childAspectRatio: 0.5,
-                  ),
-                  itemCount: unsplashImages.length,
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: ((context, index) => GridTile(
-                      child: InkWell(
-                          onTap: (){
-                            // Navigate to the second screen when tapped
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => ImageView(imgUrl: unsplashImages[index], imgName: "Image",)),
-                            );
-                          },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                  unsplashImages[index]
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.71,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12.0,
+                      mainAxisSpacing: 12.0,
+                      childAspectRatio: 0.5,
+                    ),
+                    itemCount: unsplashImages.length,
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: ((context, index) => GridTile(
+                        child: InkWell(
+                            onTap: (){
+                              // Navigate to the second screen when tapped
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ImageView(imgUrl: unsplashImages[index], imgName: "Image",)),
+                              );
+                            },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                    unsplashImages[index]
+                                ),
+                                fit: BoxFit.cover,
                               ),
-                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
-                      ),
-                  )),
+                    )),
+                  ),
                 ),
               ),
             ],

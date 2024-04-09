@@ -202,16 +202,17 @@ class _registerPageState extends State<registerPage> {
                     // google sign in
                     button_tile(
                         imagePath: 'lib/images/google.png',
+                      text: 'register with Google',
                       onTap: () => AuthService().signInWithGoogle(),
                     ),
 
-                    SizedBox(width: 25,),
+                    //SizedBox(width: 25,),
 
                     // facebook sign in
-                    button_tile(
-                        imagePath: 'lib/images/facebook2.png',
-                      onTap: () {},
-                    )
+                    // button_tile(
+                    //     imagePath: 'lib/images/facebook2.png',
+                    //   onTap: () {},
+                    // )
                   ],
                 ),
 
