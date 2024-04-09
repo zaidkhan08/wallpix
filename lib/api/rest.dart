@@ -34,7 +34,7 @@ Future<dynamic> convertTextToImage(String prompt, BuildContext context) async {
       body: jsonEncode({
         'cfg_scale': 15,
         'clip_guidance_preset': 'FAST_BLUE',
-        'height': 512,
+        'height': 1024,
         'width': 512,
         'samples': 1,
         'steps': 150,

@@ -58,7 +58,8 @@ class _PlansState extends State<Plans> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                width: 300, // Adjusted width of the card
+                width: 400, // Adjusted width of the card
+                height: 255,
                 child: SubscriptionCard(
                   title: '₹299',
                   price: '500 pixCoins',
@@ -108,9 +109,10 @@ class _PlansState extends State<Plans> {
                   },
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               SizedBox(
-                width: 300, // Adjusted width of the card
+                width: 400, // Adjusted width of the card
+                height: 255,
                 child: SubscriptionCard(
                   title: '₹499',
                   price: '1500 pixCoins',
