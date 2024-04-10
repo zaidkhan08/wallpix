@@ -63,16 +63,22 @@ class _introsliderState extends State<introslider> {
                     )
                 ),
               child:
-              Center(child:
-              ElevatedButton(
-                  onPressed: (){
-                    Navigator.pushReplacement(
-                        context, MaterialPageRoute(builder: (context)=>AuthPage() ));
-                  },
-                  child: Text("Get Started"),)
+                Padding(
+                  padding: const EdgeInsets.all(110.0),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: ElevatedButton(
+                            onPressed: (){
+                              Navigator.pushReplacement(
+                                  context, MaterialPageRoute(builder: (context)=>AuthPage() ));
+                            },
+                            child: Text("Get Started"),),
+                    ),
 
-            )
-            )],
+                ),
+
+
+            ),],
             ),
           Padding(
             padding: const EdgeInsets.all(25.0),
