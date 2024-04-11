@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:walllhang/Widgets/button_tile.dart';
 import 'package:walllhang/Widgets/my_button.dart';
 import 'package:walllhang/Widgets/my_textField.dart';
@@ -213,7 +212,7 @@ class _loginPageState extends State<loginPage> {
                     // google sign in
                     button_tile(
                         imagePath: 'lib/images/google.png',
-                      text: 'login with Google',
+                      text: 'Sign In with Google',
                       onTap: () =>  AuthService().signInWithGoogle(),
                     ),
 

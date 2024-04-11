@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
@@ -237,7 +236,7 @@ class _AllImagesState extends State<AllImages> {
     if (!apiRequestSucceeded) {
       // Show the message only if no API request succeeded
       scaffoldMessenger?.showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('All API keys have reached their limit.'),
         ),
       );
@@ -265,14 +264,6 @@ class _AllImagesState extends State<AllImages> {
       showLimitReachedMessage();
     }
   }
-
-  static final customCacheManager = CacheManager(
-    Config(
-      'customCacheKey',
-      stalePeriod: const Duration(days: 3),
-      maxNrOfCacheObjects: 100,
-    ),
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -355,7 +346,7 @@ class _AllImagesState extends State<AllImages> {
                       itemBuilder: (context, index) {
                         if (index == gridViewImages.length) {
                           fetchMoreGridViewImages();
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(child: CircularProgressIndicator());
                         }
 
                         return InkWell(

@@ -2,13 +2,10 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:walllhang/utils/userRepo.dart';
 import 'Widgets/subscriptionCard.dart';
 import 'package:http/http.dart' as http;
-
-import 'myHomePage.dart';
 
 class Plans extends StatefulWidget {
   const Plans({Key? key});
@@ -58,7 +55,8 @@ class _PlansState extends State<Plans> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                width: 300, // Adjusted width of the card
+                width: 400, // Adjusted width of the card
+                height: 320,
                 child: SubscriptionCard(
                   title: '₹299',
                   price: '500 pixCoins',
@@ -71,7 +69,7 @@ class _PlansState extends State<Plans> {
                       await Stripe.instance.presentPaymentSheet();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Payment Successful',
+                          content: const Text('Payment Successful',
                               style: TextStyle(color: Colors.white)),
                           duration: const Duration(seconds: 1),
                           backgroundColor: Colors.green[600],
@@ -93,7 +91,7 @@ class _PlansState extends State<Plans> {
                       print("Payment Sheet Failed");
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Payment Failed',
+                          content: const Text('Payment Failed',
                             style: TextStyle(color: Colors.white)),
                           duration: const Duration(seconds: 1),
                           backgroundColor: Colors.red[600],
@@ -108,13 +106,14 @@ class _PlansState extends State<Plans> {
                   },
                 ),
               ),
-              const SizedBox(height: 30),
+              //const SizedBox(height: 20),
               SizedBox(
-                width: 300, // Adjusted width of the card
+                width: 400, // Adjusted width of the card
+                height: 320,
                 child: SubscriptionCard(
                   title: '₹499',
                   price: '1000 pixCoins',
-                  description: 'Generate your unique ideas more efficiently.',
+                  description: 'Create even more stunning wallpapers.',
                   buttonText: 'BUY NOW',
                   onPressed: () async {
                     // Action when the button is pressed
@@ -166,50 +165,6 @@ class _PlansState extends State<Plans> {
       ),
     );
   }
-
-  // Future<void> makePayment(String amount, String currency) async {
-  //   try {
-  //     paymentIntentData = await createPaymentIntent(amount, currency);
-  //     await Stripe.instance.initPaymentSheet(
-  //         paymentSheetParameters: SetupPaymentSheetParameters(
-  //           paymentIntentClientSecret: paymentIntentData!['client_secret'],
-  //           style: ThemeMode.dark,
-  //           merchantDisplayName: 'WalPix',
-  //       )
-  //     );
-  //
-  //
-  //
-  //   } catch (e) {
-  //     print('exception: '+e.toString());
-  //     return null;
-  //   }
-  // }
-
-  // displayPaymentSheet() async {
-  //   try {
-  //
-  //     await Stripe.instance.presentPaymentSheet().then((value){
-  //       showDialog(context: context, builder: (_) => AlertDialog(
-  //         content: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [Row(children: [Icon(Icons.check_circle, color: Colors.green,), Text("Payment Successful")],)],
-  //         ),
-  //       ));
-  //     });
-  //
-  //
-  //       paymentIntentData = null;
-  //
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Paid Successfully")));
-  //
-  //   } on StripeException catch (e) {
-  //     print(e.toString());
-  //     showDialog(context: context, builder: (_) => AlertDialog(
-  //       content: Text('Payment Cancelled!'),
-  //     ));
-  //   }
-  // }
 
   createPaymentIntent(String amount, String currency) async {
     try {

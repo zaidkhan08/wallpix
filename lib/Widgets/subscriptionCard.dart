@@ -58,103 +58,101 @@ class _SubscriptionCardState extends State<SubscriptionCard>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 320, // Adjusted height to accommodate content
-      child: Stack(
-        alignment: Alignment.center,
+      height: 380, // Adjusted height to accommodate content
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Positioned(
-            child: AnimatedBuilder(
-              animation: _controller,
-              builder: (context, child) {
-                return Transform.rotate(
-                  angle: _animation.value,
-                  child: child,
-                );
-              },
-              child: Container(
-                width: 300, // Adjusted width of the card
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3),
+          AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return Transform.rotate(
+                angle: _animation.value,
+                child: child,
+              );
+            },
+            child: Container(
+              width: 300, // Adjusted width of the card
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 20,),
+                  const SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 25,
+                      child: Icon(
+                        Icons.star,
+                        size: 30,
+                        color: Color(0xFF03033F),
+                      ),
                     ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 60,
-                      width: 60,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 25,
-                        child: Icon(
-                          Icons.star,
-                          size: 30,
-                          color: Colors.blue,
+                  ),
+                  const SizedBox(height: 10.0),
+                  Text(
+                    widget.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 23.0,
+                    ),
+                  ),
+                  const SizedBox(height: 10.0),
+                  Text(
+                    widget.price,
+                    style: const TextStyle(
+                      fontSize: 19.0,
+                    ),
+                  ),
+                  const SizedBox(height: 10.0),
+                  Text(
+                    widget.description,
+                    style: const TextStyle(
+                      fontSize: 12.0,
+                    ),
+                  ),
+                  const SizedBox(height: 16.0),
+                  SizedBox(
+                    width: 200, // Adjusted width of the button
+                    child: TextButton(
+                      onPressed: widget.onPressed,
+                      style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all(const Color(0xFF03033F)),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                        padding: MaterialStateProperty.all(
+                          const EdgeInsets.symmetric(vertical: 12.0),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10.0),
-                    Text(
-                      widget.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
-                      ),
-                    ),
-                    const SizedBox(height: 10.0),
-                    Text(
-                      widget.price,
-                      style: const TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ),
-                    const SizedBox(height: 10.0),
-                    Center(
                       child: Text(
-                        widget.description,
+                        widget.buttonText,
                         style: const TextStyle(
-                          fontSize: 14.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16.0),
-                    SizedBox(
-                      width: 200, // Adjusted width of the button
-                      child: ElevatedButton(
-                        onPressed: widget.onPressed,
-                        style: ButtonStyle(
-                          backgroundColor:
-                          MaterialStateProperty.all(Colors.blue),
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          padding: MaterialStateProperty.all(
-                            const EdgeInsets.symmetric(vertical: 12.0),
-                          ),
-                        ),
-                        child: Text(
-                          widget.buttonText,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 20,),
+                ],
               ),
             ),
           ),

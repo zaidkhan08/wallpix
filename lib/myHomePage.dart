@@ -255,8 +255,8 @@ class _MyHomePageState extends State<MyHomePage> {
     children: pages,
     ),
     bottomNavigationBar: CurvedNavigationBar(
-    height: 59,
-    backgroundColor: Colors.transparent,
+    height: 50,
+    backgroundColor: Colors.white10,
     color: Colors.black54,
     items: [
     Icon(Icons.home, size: 30, color: Colors.white),
