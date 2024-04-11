@@ -8,10 +8,10 @@ class introslider extends StatefulWidget {
   const introslider({super.key});
 
   @override
-  State<introslider> createState() => _introsliderState();
+  State<introslider> createState() => introsliderState();
 }
 
-class _introsliderState extends State<introslider> {
+class introsliderState extends State<introslider> {
 
   late PageController mycontroler =PageController();
   Icon micon =  Icon(Icons.navigate_next,size: 35,);
