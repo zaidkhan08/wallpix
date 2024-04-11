@@ -75,6 +75,20 @@ class _AiPageState extends State<AiPage> {
     }
   }
 
+  Future<bool> convertTextToImageAndCheckResult(String text, BuildContext context) async {
+    // Call the convertTextToImage function
+    final uint8List = await convertTextToImage(text, context);
+
+    // Check if the uint8List is not null
+    if (uint8List!= null) {
+      // The function executed successfully : return true
+      return true;
+    } else {
+      // The function did not execute successfully: return false
+      return false;
+    }
+  }
+
   // Image Generation through stability diffusion
   void generateImage() async {
     var initialCoins = coins;
@@ -86,7 +100,7 @@ class _AiPageState extends State<AiPage> {
 
       try {
         // Attempt image generation
-        bool success = await convertTextToImage(textController.text, context);
+        bool success = await convertTextToImageAndCheckResult(textController.text, context);
 
         if (success) {
           // Deduct coins after successful image generation
@@ -112,12 +126,9 @@ class _AiPageState extends State<AiPage> {
               );
             },
           );
-
-          // Add coins back to the user's account if image generation fails
-          await _userRepo.addCoins(userId, 50);
-          _loadUserCoins();
         }
       } catch (e) {
+        print(e);
         showDialog(
           context: context,
           builder: (BuildContext context) {

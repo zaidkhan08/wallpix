@@ -122,7 +122,7 @@ class _PlansState extends State<Plans> {
                       await Stripe.instance.presentPaymentSheet();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Payment Successful',
+                          content: const Text('Payment Successful',
                               style: TextStyle(color: Colors.white)),
                           duration: const Duration(seconds: 1),
                           backgroundColor: Colors.green[600],
@@ -144,7 +144,7 @@ class _PlansState extends State<Plans> {
                       print("Payment Sheet Failed");
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Payment Failed',
+                          content: const Text('Payment Failed',
                               style: TextStyle(color: Colors.white)),
                           duration: const Duration(seconds: 1),
                           backgroundColor: Colors.red[600],
