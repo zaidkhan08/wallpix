@@ -30,7 +30,7 @@ class _AllImagesState extends State<AllImages> {
   List<String> pageViewImages = [
     'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjg0MC0wNi0wOV8xLmpwZw.jpg',
     'https://i.pinimg.com/originals/bd/b2/29/bdb229e4ee8046c922104ae32b99bc17.png',
-    'https://thumbs.dreamstime.com/z/d-word-vacation-tropical-paradise-island-palm-trees-sun-tents-sail-boat-ocean-day-63462376.jpg',
+    'https://cdn.pixabay.com/photo/2017/07/11/03/30/vacation-2492247_1280.jpg',
     'https://i.pinimg.com/originals/5b/12/18/5b12182d594590211cfb4b31f8c2be95.jpg',
   ];
 
@@ -52,6 +52,9 @@ class _AllImagesState extends State<AllImages> {
   List<String> apiKeys = [
     'Client-ID wbMIOCWddNHjYubR1VHDbJdHPKlut2uT1JopGVQ6rh4',
     'Client-ID T7iGw4T2nvs77ju1uNntDTY3Nl4vBIz2Jk-tzjX06tw',
+    'Client-ID CwMdLxJ1PO6VYY7rugXRZzOAkjrrg4utRo_zI5wlYv4',
+
+
   ];
 
   // Keep track of the current API key index

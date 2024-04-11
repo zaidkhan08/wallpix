@@ -9,6 +9,7 @@ import 'package:walllhang/home.dart';
 import 'package:walllhang/login.dart';
 import 'package:walllhang/plans.dart';
 import 'package:walllhang/profilepage/profile.dart';
+import 'package:walllhang/report.dart';
 import 'package:walllhang/screens/favoriteImagesView.dart';
 import 'searchbar.dart';
 import 'imggen.dart';
@@ -63,14 +64,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   accountEmail: Text(user.email!),
-                  currentAccountPicture: const CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      Icons.account_circle,
-                      size: 64,
-                      color: Colors.grey,
-                    ),
-                  ),
                   decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage(
@@ -85,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text(
                     '-Welcome to Wallpix',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black45,
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
                     ),
@@ -140,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     leading: const Icon(Icons.share_sharp),
                     title: const Text(
                       'Share',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold,),
                     ),
                     onTap: () {
                       Navigator.pop(context);
@@ -150,14 +143,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     leading: const Icon(Icons.report),
                     title: const Text(
                       'Report',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold,),
                     ),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => introslider(),
+                            builder: (context) => Report(),
                         ),
                       );
                     },

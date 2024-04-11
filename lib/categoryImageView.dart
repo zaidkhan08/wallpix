@@ -21,8 +21,8 @@ class _catImageViewState extends State<catImageView> {
   // Add multiple API keys
   List<String> apiKeys = [
     'Client-ID CjIXyDOHe3ez0aMycHa5hCafSP2PpEByRfdT3LUxjhk', // New key - categoryImageView
-    'Client-ID wbMIOCWddNHjYubR1VHDbJdHPKlut2uT1JopGVQ6rh4', // replace this
-    'Client-ID T7iGw4T2nvs77ju1uNntDTY3Nl4vBIz2Jk-tzjX06tw', // replace this
+    'Client-ID CwMdLxJ1PO6VYY7rugXRZzOAkjrrg4utRo_zI5wlYv4', // replace this
+    'Client-ID W119HHGY4k0kofMoaXweh_ZUtuvs-sHtvTpCat-6LNs', // replace this
   ];
   int currentApiKeyIndex = 0;
   late Timer apiSwitchTimer;
