@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:walllhang/apploader.dart';
 import 'package:walllhang/screens/auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -52,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
       // After the delay, navigate to the authentication page
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const AuthPage()),
+        MaterialPageRoute(builder: (context) => const introslider()),
       );
     });
   }
