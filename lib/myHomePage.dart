@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text(
                     '-Welcome to Wallpix',
                     style: TextStyle(
-                      color: Colors.black45,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
                     ),
@@ -133,26 +133,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     leading: const Icon(Icons.share_sharp),
                     title: const Text(
                       'Share',
-                      style: TextStyle(fontWeight: FontWeight.bold,),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     onTap: () {
                       Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.report),
-                    title: const Text(
-                      'Report',
-                      style: TextStyle(fontWeight: FontWeight.bold,),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Report(),
-                        ),
-                      );
                     },
                   ),
                 ],
@@ -192,76 +176,76 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
-        appBar: AppBar(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
         title: currentIndex != 2
-        ? AnimatedCrossFade(
-        firstChild: const Text(
-        'Wallpix',
-        style: TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-        wordSpacing: 10,
-        height: 2,
-    ),
-    ),
-    secondChild: Container(
-    width: 200,
-    child: TextField(
-    style: TextStyle(color: Colors.white),
-    decoration: InputDecoration(
-    hintText: 'Search...',
-    hintStyle: TextStyle(color: Colors.grey),
-    border: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(20),
-    borderSide: BorderSide(
-    color: Colors.white,
-    ),
-    ),
-    filled: true,
-    fillColor: Colors.white,
-    contentPadding: EdgeInsets.symmetric(horizontal: 10),
-    ),
-    ),
-    ),
-    crossFadeState: _isSearchOpen
-    ? CrossFadeState.showSecond
-        : CrossFadeState.showFirst,
-    duration: Duration(milliseconds: 300),
-    )
-        : null,
-    backgroundColor: Colors.transparent,
-    iconTheme: IconThemeData(color: Colors.white),
-    actions: [
-    IconButton(
-    icon: Icon(_isSearchOpen ? Icons.close : Icons.search_outlined),
-    onPressed: _isSearchOpen ? _toggleSearch : _navigateToSearchPage,
-    ),
-    IconButton(
-    icon: Icon(_isDrawerOpen ? Icons.close : Icons.menu),
-    onPressed: _openDrawer,
-    ),
-    ],
-    ),
-    body: IndexedStack(
-    index: currentIndex,
-    children: pages,
-    ),
-    bottomNavigationBar: CurvedNavigationBar(
-    height: 50,
-    backgroundColor: Colors.white10,
-    color: Colors.black54,
-    items: [
-    Icon(Icons.home, size: 30, color: Colors.white),
-    Icon(Icons.category_outlined, size: 30, color: Colors.white),
-    Icon(Icons.memory, size: 30, color: Colors.white),
-    ],
-      onTap: (int index) {
-        setState(() {
-          currentIndex = index;
-        });
-      },
-    ),
+            ? AnimatedCrossFade(
+                firstChild: const Text(
+                  'Wallpix',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    wordSpacing: 10,
+                    height: 2,
+                  ),
+                ),
+                secondChild: Container(
+                  width: 200,
+                  child: TextField(
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'Search...',
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    ),
+                  ),
+                ),
+                crossFadeState: _isSearchOpen
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
+                duration: Duration(milliseconds: 300),
+              )
+            : null,
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: Icon(_isSearchOpen ? Icons.close : Icons.search_outlined),
+            onPressed: _isSearchOpen ? _toggleSearch : _navigateToSearchPage,
+          ),
+          IconButton(
+            icon: Icon(_isDrawerOpen ? Icons.close : Icons.menu),
+            onPressed: _openDrawer,
+          ),
+        ],
+      ),
+      body: IndexedStack(
+        index: currentIndex,
+        children: pages,
+      ),
+      bottomNavigationBar: CurvedNavigationBar(
+        height: 50,
+        backgroundColor: Colors.white10,
+        color: Colors.black54,
+        items: [
+          Icon(Icons.home, size: 30, color: Colors.white),
+          Icon(Icons.category_outlined, size: 30, color: Colors.white),
+          Icon(Icons.memory, size: 30, color: Colors.white),
+        ],
+        onTap: (int index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+      ),
     );
   }
 }

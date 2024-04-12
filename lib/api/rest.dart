@@ -11,7 +11,7 @@ Future<dynamic> convertTextToImage(String prompt, BuildContext context) async {
 
   // Define multiple API keys
   List<String> apiKeys = [
-    'Bearer sk-t2U22pmJkRlw1EFIpStUtC8KhYuMrO3uIugfTa81OZ78EPKr',
+    'Bearer sk-aaze8KN1hPjg5g8Pl2FtJChfhqXfDfXytSokcCQpOUHjv65P',
     // Add more API keys as needed
   ];
 

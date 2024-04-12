@@ -20,9 +20,9 @@ class _catImageViewState extends State<catImageView> {
   List<String> unsplashImages = [];
   // Add multiple API keys
   List<String> apiKeys = [
+    'Client-ID QRZelDFt0UV-3JcxQa9Ts8N7Y4YCMWr00reUds0Mas0', // New Key - categoryImageView
+    'Client-ID tdT9qLblRpFSSRxUgw3ISf9yCepEigVEwObaGInV3v8', // New Key - categoryImageView
     'Client-ID CjIXyDOHe3ez0aMycHa5hCafSP2PpEByRfdT3LUxjhk', // New key - categoryImageView
-    'Client-ID CwMdLxJ1PO6VYY7rugXRZzOAkjrrg4utRo_zI5wlYv4', // replace this
-    'Client-ID W119HHGY4k0kofMoaXweh_ZUtuvs-sHtvTpCat-6LNs', // replace this
   ];
   int currentApiKeyIndex = 0;
   late Timer apiSwitchTimer;
